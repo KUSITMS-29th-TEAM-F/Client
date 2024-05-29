@@ -1,19 +1,16 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-
 import _axios from 'axios';
 
 import axios from '../../api/axios';
 
 const AuthKakaoCallback = () => {
   const [searchParams] = useSearchParams();
-  const [onlyOnce, setOnlyOnce] = useState(true);
 
   useEffect(() => {
     const fetchLogin = async () => {
       const code = searchParams.get('code');
       try {
-        if (!onlyOnce) return;
         if (!code) return;
         const kakaoRes = await _axios.get(
           `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${
@@ -44,7 +41,6 @@ const AuthKakaoCallback = () => {
         } else {
           window.location.href = '/';
         }
-        setOnlyOnce(false);
       } catch (error) {
         console.error(error);
       }
@@ -52,7 +48,7 @@ const AuthKakaoCallback = () => {
     fetchLogin();
   }, [searchParams]);
 
-  return null;
+  return <></>;
 };
 
 export default AuthKakaoCallback;
