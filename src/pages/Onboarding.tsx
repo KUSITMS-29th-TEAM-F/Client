@@ -1,21 +1,7 @@
-'use client';
-
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-
-import FirstPrivacySection from '@/components/ui/privacy/FirstPrivacySection';
-import { initPrivacyValue } from '@/constants/privacy';
-import { PrivacyInputValue, PrivacySectionProps } from '@/interfaces/privacy';
-import SecondPrivacySection from '@/components/ui/privacy/SecondPrivacySection';
-import ThirdPrivacySection from '@/components/ui/privacy/ThirdPrivacySection';
-import Button from '@/components/ui/Button';
-import NicknameSection from '@/components/onboarding/NicknameSection';
+import { useEffect, useState } from 'react';
 import clsx from 'clsx';
-import CompleteSection from '@/components/onboarding/CompleteSection';
-import NavBarHide from '@/components/ui/global-style/NavBarHide';
-import XIcon from '@/components/ui/icon/XIcon';
-import ChevronLeftIcon from '@/components/ui/icon/ChevronLeftIcon';
-import { fetchNickname, fetchOnboarding } from '@/api/onboarding';
+import { useNavigate } from 'react-router-dom';
+
 import {
   areaList,
   cityList,
@@ -26,11 +12,21 @@ import {
   supportIncomeBracketList,
   universityCityList,
   yearList,
-} from '@/constants/optionList';
-import { setTokenCookie } from '../actions/cookies';
+} from '../constants/optionList';
+import { PrivacyInputValue, PrivacySectionProps } from '../interfaces/privacy';
+import { initPrivacyValue } from '../constants/privacy';
+import axios from '../api/axios';
+import XIcon from '../components/ui/icon/XIcon';
+import ChevronLeftIcon from '../components/ui/icon/ChevronLeftIcon';
+import NicknameSection from '../components/onboarding/NicknameSection';
+import FirstPrivacySection from '../components/ui/privacy/FirstPrivacySection';
+import SecondPrivacySection from '../components/ui/privacy/SecondPrivacySection';
+import ThirdPrivacySection from '../components/ui/privacy/ThirdPrivacySection';
+import CompleteSection from '../components/onboarding/CompleteSection';
+import Button from '../components/ui/Button';
 
 const Onboarding = () => {
-  const router = useRouter();
+  const navigate = useNavigate();
 
   const [page, setPage] = useState<number>(0);
   const [nickname, setNickname] = useState<string>('');
@@ -52,15 +48,12 @@ const Onboarding = () => {
   const handleNextButtonClick = async () => {
     window.scrollTo(0, 0);
     if (page === 0) {
-      const res = await fetchNickname(
-        nickname,
-        localStorage.getItem('access_token') || '',
-      );
+      const res = await axios.post('/onboards/nick-name', { nickname });
       console.log(res.data);
       const accessToken = res.data.accessToken;
-      setTokenCookie(accessToken);
+      localStorage.setItem('access_token', accessToken);
     } else if (page === 3) {
-      const res = await fetchOnboarding({
+      const newValues = {
         schoolType: value.universityType,
         schoolName: value.universityName,
         schoolLocation:
@@ -100,9 +93,9 @@ const Onboarding = () => {
           value.supportIncomeBracket !== null
             ? Number(supportIncomeBracketList[value.supportIncomeBracket])
             : null,
-      });
+      };
+      const res = await axios.post('/onboards', newValues);
       console.log(res.data);
-      localStorage.removeItem('access_token');
     }
     if (page <= 3) {
       setPage(page + 1);
@@ -112,7 +105,7 @@ const Onboarding = () => {
   };
 
   const handleCloseButtonClick = () => {
-    router.push('/');
+    navigate('/');
   };
 
   const handlePreviousButtonClick = () => {
@@ -125,6 +118,19 @@ const Onboarding = () => {
     handleInputChange: handleInputChange,
     handleSelectedIndexChange: handleSelectedIndexChange,
   };
+
+  useEffect(() => {
+    const navBar = document.getElementsByClassName('nav-bar')[0] as HTMLElement;
+    if (navBar) {
+      navBar.style.display = 'none';
+    }
+
+    return () => {
+      if (navBar) {
+        navBar.style.display = 'block';
+      }
+    };
+  }, []);
 
   return (
     <div className="flex h-full flex-col">
@@ -151,7 +157,6 @@ const Onboarding = () => {
         </div>
         <div className="h-[3.5rem]" />
       </div>
-      <NavBarHide />
       {page !== 0 && (
         <div>
           <div className="fixed z-10 w-full bg-white">

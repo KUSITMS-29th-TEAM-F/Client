@@ -1,24 +1,34 @@
-import { fetchScholarshipsDate } from '@/api/my-scholarship';
-import Image from 'next/image';
-import Link from 'next/link';
+import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
-const MyScholarshipsDatePage = async () => {
-  const date = new Date();
+import axios from '../api/axios';
 
-  const scholarshipList: {
-    applyId: number;
-    endDocumentDate: string;
-    announcementImageUrl: string;
-    scholarShipName: string;
-    scholarShipFoundation: string;
-    applicationPeriod: string;
-  }[] = [];
+const MyScholarshipsDate = () => {
+  const [scholarshipList, setScholarshipList] = useState<
+    {
+      applyId: number;
+      endDocumentDate: string;
+      announcementImageUrl: string;
+      scholarShipName: string;
+      scholarShipFoundation: string;
+      applicationPeriod: string;
+    }[]
+  >([]);
 
-  for (let month = 1; month <= 12; month++) {
-    const res = await fetchScholarshipsDate(date.getFullYear(), month);
-
-    scholarshipList.push(...res.data.announcementCalandarDayList);
-  }
+  useEffect(() => {
+    const fetchData = async () => {
+      const date = new Date();
+      let newScholarshipList = [];
+      for (let month = 1; month <= 12; month++) {
+        const res = await axios.get(
+          `/announcements/calandar/list/${date.getFullYear()}/${month}`,
+        );
+        newScholarshipList.push(...res.data.data.announcementCalandarDayList);
+      }
+      setScholarshipList(newScholarshipList);
+    };
+    fetchData();
+  }, []);
 
   const formatSectionDateString = (dateString: string) => {
     const date = new Date(dateString);
@@ -53,11 +63,11 @@ const MyScholarshipsDatePage = async () => {
                     formatListDateString(scholarship.endDocumentDate) && (
                     <li key={scholarship.applyId}>
                       <Link
+                        to={`/my-scholarships/${scholarship.applyId}`}
                         className="flex items-center gap-4 rounded-2xl border border-gray-10 bg-gray-00 p-4 pb-3"
-                        href={`/my-scholarships/${scholarship.applyId}`}
                       >
                         <div className="overflow-hidden rounded-lg">
-                          <Image
+                          <img
                             src={scholarship.announcementImageUrl}
                             alt={scholarship.scholarShipName}
                             width={64}
@@ -87,4 +97,4 @@ const MyScholarshipsDatePage = async () => {
   );
 };
 
-export default MyScholarshipsDatePage;
+export default MyScholarshipsDate;

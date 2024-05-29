@@ -1,16 +1,15 @@
-import { useEffect, useRef, useState } from "react";
-import clsx from "clsx";
+import { useEffect, useRef, useState } from 'react';
+import clsx from 'clsx';
+import { Link } from 'react-router-dom';
 
-import ChevronRightIcon from "../icon/ChevronRightIcon";
-import { deleteTokenCookie } from "../../../actions/cookies";
-import { Link } from "react-router-dom";
+import ChevronRightIcon from '../icon/ChevronRightIcon';
 
 interface ProfileDesktopProps {
   nickname: string;
 }
 
 const ProfileDesktop = ({ nickname }: ProfileDesktopProps) => {
-  const menuRef = useRef<HTMLUListElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -21,23 +20,23 @@ const ProfileDesktop = ({ nickname }: ProfileDesktopProps) => {
     text: string;
     onClick?: () => void;
     href?: string;
-    variant: "default" | "danger";
+    variant: 'default' | 'danger';
   }[] = [
     {
-      iconSrc: "/icons/menu/cover-letters-icon.svg",
+      iconSrc: '/icons/menu/cover-letters-icon.svg',
       iconWidth: 20,
       iconHeight: 20,
-      text: "마이페이지",
-      variant: "default",
+      text: '마이페이지',
+      variant: 'default',
       onClick: () => handleMyPageClick(),
-      href: "/me",
+      href: '/me',
     },
     {
-      iconSrc: "/icons/menu/logout-icon.svg",
+      iconSrc: '/icons/menu/logout-icon.svg',
       iconWidth: 20,
       iconHeight: 20,
-      text: "로그아웃",
-      variant: "danger",
+      text: '로그아웃',
+      variant: 'danger',
       onClick: () => handleLogoutClick(),
     },
   ];
@@ -51,25 +50,29 @@ const ProfileDesktop = ({ nickname }: ProfileDesktopProps) => {
   };
 
   const handleLogoutClick = () => {
-    deleteTokenCookie();
+    localStorage.removeItem('access-token');
+    localStorage.removeItem('refresh-token');
     setIsMenuOpen(false);
-    window.location.href = "/";
+    window.location.href = '/';
   };
 
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(e.target as Node)
+      ) {
         setIsMenuOpen(false);
       }
     };
-    document.addEventListener("click", handleClickOutside);
+    document.addEventListener('click', handleClickOutside);
     return () => {
-      document.removeEventListener("click", handleClickOutside);
+      document.removeEventListener('click', handleClickOutside);
     };
   }, [isMenuOpen]);
 
   return (
-    <div className="relative">
+    <div ref={dropdownRef} className="relative">
       <div
         className="flex cursor-pointer items-center gap-2"
         onClick={handleProfileClick}
@@ -90,14 +93,11 @@ const ProfileDesktop = ({ nickname }: ProfileDesktopProps) => {
         </div>
       </div>
       {isMenuOpen && (
-        <ul
-          ref={menuRef}
-          className="absolute -bottom-2 right-0 w-[12rem] translate-y-full rounded-2xl border border-gray-05 bg-gray-00 shadow-lg"
-        >
+        <ul className="absolute -bottom-2 right-0 w-[12rem] translate-y-full rounded-2xl border border-gray-05 bg-gray-00 shadow-lg">
           {menuList.map((menu, index) => (
             <li key={index}>
               <Link
-                to={menu.href || "#"}
+                to={menu.href || '#'}
                 className="flex items-center gap-3 px-6 py-4"
                 onClick={menu.onClick}
               >
@@ -108,13 +108,13 @@ const ProfileDesktop = ({ nickname }: ProfileDesktopProps) => {
                   <img
                     src={menu.iconSrc}
                     alt={menu.text}
-                    className="w-full h-full object-contain"
+                    className="h-full w-full object-contain"
                   />
                 </div>
                 <span
-                  className={clsx("text-md-200", {
-                    "text-gray-60": menu.variant === "default",
-                    "text-danger-50": menu.variant === "danger",
+                  className={clsx('text-md-200', {
+                    'text-gray-60': menu.variant === 'default',
+                    'text-danger-50': menu.variant === 'danger',
                   })}
                 >
                   {menu.text}

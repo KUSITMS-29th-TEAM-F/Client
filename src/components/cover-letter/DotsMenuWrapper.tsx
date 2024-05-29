@@ -1,7 +1,5 @@
-'use client';
-
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useNavigate } from 'react-router-dom';
 
 import PencilCogIcon from '../ui/icon/PencilCogIcon';
 import TrashXIcon from '../ui/icon/TrashXIcon';
@@ -13,7 +11,7 @@ interface DotsMenuWrapperProps {
 }
 
 const DotsMenuWrapper = ({ coverLetterId }: DotsMenuWrapperProps) => {
-  const router = useRouter();
+  const navigate = useNavigate();
 
   const [isDeletePopUpOpen, setIsDeletePopUpOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -34,7 +32,7 @@ const DotsMenuWrapper = ({ coverLetterId }: DotsMenuWrapperProps) => {
   ];
 
   const handleEditMenuItemClick = () => {
-    router.push(`/cover-letters/${coverLetterId}/edit`);
+    navigate(`/cover-letters/${coverLetterId}/edit`);
   };
 
   const handleDeleteMenuItemClick = () => {

@@ -1,13 +1,16 @@
-import { addComment, fetchCommentList } from '@/api/scholarship';
 import clsx from 'clsx';
-import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+
+import axios from '../../../../api/axios';
 
 interface CommentTabProps {
   scholarshipId: number;
 }
 
 const CommentsTab = ({ scholarshipId }: CommentTabProps) => {
+  const queryClient = useQueryClient();
+
   const [isCommentInputFocus, setIsCommentInputFocus] = useState(false);
   const [commentValue, setCommentValue] = useState('');
   const [commentList, setCommentList] = useState<
@@ -17,6 +20,28 @@ const CommentsTab = ({ scholarshipId }: CommentTabProps) => {
       comment: string;
     }[]
   >([]);
+
+  useQuery({
+    queryKey: ['announcements', scholarshipId, 'comments'],
+    queryFn: async () => {
+      const res = await axios.get(`/announcements/${scholarshipId}/comments`);
+      setCommentList(res.data.data);
+      return res.data;
+    },
+  });
+
+  const addComment = useMutation({
+    mutationFn: async (content: string) => {
+      return await axios.post(`/announcements/${scholarshipId}/comments`, {
+        commentContents: content,
+      });
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['announcements'] });
+      setCommentValue('');
+      setIsCommentInputFocus(false);
+    },
+  });
 
   const handleCommentInputFocus = () => {
     setIsCommentInputFocus(true);
@@ -32,18 +57,8 @@ const CommentsTab = ({ scholarshipId }: CommentTabProps) => {
 
   const handleCommentSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    let res = await addComment(scholarshipId, commentValue);
-    res = await fetchCommentList(scholarshipId);
-    setCommentList(res.data);
+    addComment.mutate(commentValue);
   };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const res = await fetchCommentList(scholarshipId);
-      setCommentList(res.data);
-    };
-    fetchData();
-  }, []);
 
   return (
     <div>
@@ -86,10 +101,10 @@ const CommentsTab = ({ scholarshipId }: CommentTabProps) => {
         {commentList.map((comment, index) => (
           <li key={index} className="flex items-start gap-2 p-4">
             <div className="relative h-[2rem] w-[2rem] overflow-hidden rounded-full">
-              <Image
+              <img
                 src="/images/placeholders/placeholder-profile.png"
                 alt="프사 임시 이미지"
-                fill
+                className="h-full w-full object-cover"
               />
             </div>
             <div className="flex min-w-0 flex-1 flex-col items-start gap-2">

@@ -1,52 +1,60 @@
-import { fetchMyApplyList } from '@/api/my-scholarship';
-import Status, { StatusProps } from '@/components/ui/Status';
-import clsx from 'clsx';
-import Image from 'next/image';
-import Link from 'next/link';
+import { useState } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 
-const MyScholarshipsListPage = async ({
-  searchParams,
-}: {
-  searchParams: { status: string };
-}) => {
+import axios from '../api/axios';
+import clsx from 'clsx';
+import Status, { StatusProps } from '../components/ui/Status';
+
+const MyScholarshipsList = () => {
+  const [searchParams] = useSearchParams();
+
+  const [scholarshipList, setScholarshipList] = useState<
+    {
+      applyId: number;
+      scholarShipName: string;
+      scholarShipFoundation: string;
+      endDocumentDate: string;
+      announcementImageUrl: string;
+      applyStatus: '합격' | '불합격' | '미입력';
+      applicationPeriod: string;
+    }[]
+  >([]);
+
+  const status =
+    searchParams.get('status') === null ? 'all' : searchParams.get('status');
+
   const badgeList: { label: string; href: string; active: boolean }[] = [
     {
       label: '전체',
       href: '/my-scholarships/list',
-      active: searchParams.status === undefined,
+      active: status === 'all',
     },
     {
       label: '합격',
       href: '/my-scholarships/list?status=pass',
-      active: searchParams.status === 'pass',
+      active: status === 'pass',
     },
     {
       label: '불합격',
       href: '/my-scholarships/list?status=fail',
-      active: searchParams.status === 'fail',
+      active: status === 'fail',
     },
   ];
 
-  const res = await fetchMyApplyList(
-    searchParams.status === undefined
-      ? 'all'
-      : (searchParams.status as 'pass' | 'fail'),
-  );
-
-  const scholarshipList: {
-    applyId: number;
-    scholarShipName: string;
-    scholarShipFoundation: string;
-    endDocumentDate: string;
-    announcementImageUrl: string;
-    applyStatus: '합격' | '불합격' | '미입력';
-    applicationPeriod: string;
-  }[] = res.data.applyList;
+  useQuery({
+    queryKey: ['apply-list', status],
+    queryFn: async () => {
+      const res = await axios.get(`/apply-list/${status}`);
+      setScholarshipList(res.data.data.applyList);
+      return res.data;
+    },
+  });
 
   const filterScholarshipList = scholarshipList.filter((scholarship) => {
-    if (searchParams.status === 'pass') {
+    if (status === 'pass') {
       return scholarship.applyStatus === '합격';
-    } else if (searchParams.status === 'fail') {
+    } else if (status === 'fail') {
       return scholarship.applyStatus === '불합격';
     } else {
       return true;
@@ -65,7 +73,7 @@ const MyScholarshipsListPage = async ({
           {badgeList.map((badge, index) => (
             <Link
               key={index}
-              href={badge.href}
+              to={badge.href}
               className={clsx('text-md-200 rounded-full border px-3 py-1.5', {
                 'border-gray-80 bg-gray-80 text-gray-10': badge.active,
                 'border-gray-15 bg-gray-00 text-gray-60': !badge.active,
@@ -79,11 +87,11 @@ const MyScholarshipsListPage = async ({
           {filterScholarshipList.map((scholarship) => (
             <li key={scholarship.applyId}>
               <Link
-                href={`/my-scholarships/${scholarship.applyId}`}
+                to={`/my-scholarships/${scholarship.applyId}`}
                 className="flex items-start gap-4 rounded-2xl border border-gray-10 bg-gray-00 p-4 pb-3"
               >
                 <div className="overflow-hidden rounded-lg">
-                  <Image
+                  <img
                     src={scholarship.announcementImageUrl}
                     alt={scholarship.scholarShipName}
                     width={64}
@@ -128,4 +136,4 @@ const MyScholarshipsListPage = async ({
   );
 };
 
-export default MyScholarshipsListPage;
+export default MyScholarshipsList;

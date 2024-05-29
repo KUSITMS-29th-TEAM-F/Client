@@ -1,9 +1,9 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 
-import ArticleItem from "../../components/home/ArticleItem";
-import axios from "../../api/axios";
+import ArticleItem from '../components/home/ArticleItem';
+import Axios from '../api/axios';
 
 const Home = () => {
   const [popularScholarshipList, setPopularScholarshipList] = useState<
@@ -19,9 +19,9 @@ const Home = () => {
   >([]);
 
   useQuery({
-    queryKey: ["home", "announcements"],
+    queryKey: ['home', 'announcements'],
     queryFn: async () => {
-      const res = await axios.get("/home/announcements");
+      const res = await Axios.get('/home/announcements');
       setPopularScholarshipList(res.data.data.popularAnnouncementResponses);
       return res.data;
     },
@@ -29,28 +29,28 @@ const Home = () => {
 
   const articleList: { title: string; imageSrc: string }[] = [
     {
-      title: "건강보험료 자격득실확인서 발급 방법은 ?",
-      imageSrc: "/images/article/article1.jpeg",
+      title: '건강보험료 자격득실확인서 발급 방법은 ?',
+      imageSrc: '/images/article/article1.jpeg',
     },
     {
-      title: "장학재단 소득분위 산정은 어떻게 이뤄질까?",
-      imageSrc: "/images/article/article2.jpeg",
+      title: '장학재단 소득분위 산정은 어떻게 이뤄질까?',
+      imageSrc: '/images/article/article2.jpeg',
     },
     {
-      title: "장학금 자기소개서 잘 쓰는 방법을 공개합니다!",
-      imageSrc: "/images/article/article3.jpeg",
+      title: '장학금 자기소개서 잘 쓰는 방법을 공개합니다!',
+      imageSrc: '/images/article/article3.jpeg',
     },
     {
-      title: "교내장학금, 기업장학금, 국가장학금 .. 이게 다 뭐지?",
-      imageSrc: "/images/article/article4.jpeg",
+      title: '교내장학금, 기업장학금, 국가장학금 .. 이게 다 뭐지?',
+      imageSrc: '/images/article/article4.jpeg',
     },
     {
-      title: "유니브핏으로 영리하게 장학금 일정 관리하는 방법 ?!",
-      imageSrc: "/images/article/article5.jpeg",
+      title: '유니브핏으로 영리하게 장학금 일정 관리하는 방법 ?!',
+      imageSrc: '/images/article/article5.jpeg',
     },
     {
-      title: "장학재단 소득분위 산정은 어떻게 이뤄질까?",
-      imageSrc: "/images/article/article6.jpeg",
+      title: '장학재단 소득분위 산정은 어떻게 이뤄질까?',
+      imageSrc: '/images/article/article6.jpeg',
     },
   ];
 
@@ -61,7 +61,7 @@ const Home = () => {
           to="/scholarships/1"
           className="relative mx-auto flex w-full max-w-screen-lg justify-between overflow-hidden rounded-2xl bg-[#18181A] px-6 py-4 text-gray-00"
           style={{
-            background: "linear-gradient(93deg, #FAB928 0%, #F06E10 100%)",
+            background: 'linear-gradient(93deg, #FAB928 0%, #F06E10 100%)',
           }}
         >
           <div className="flex flex-col gap-1">

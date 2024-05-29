@@ -1,12 +1,10 @@
-import Button from '@/components/ui/Button';
+import { useState } from 'react';
+import Button from '../../../ui/Button';
+import ChecklistIcon from '../../../ui/icon/ChecklistIcon';
 import Description from '../description/Description';
-import ChecklistIcon from '@/components/ui/icon/ChecklistIcon';
-import { useEffect, useState } from 'react';
-import XIcon from '@/components/ui/icon/XIcon';
-import {
-  fetchScholarshipFoundation,
-  fetchScholarshipFoundationSummary,
-} from '@/api/scholarship';
+import XIcon from '../../../ui/icon/XIcon';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import axios from '../../../../api/axios';
 
 interface FoundationTabProps {
   scholarshipId: number;
@@ -19,17 +17,30 @@ const FoundationTab = ({ scholarshipId, foundation }: FoundationTabProps) => {
     useState<string>('');
   const [foundationSummary, setFoundationSummary] = useState<string>('');
 
-  useEffect(() => {
-    const fetchFoundation = async () => {
-      const res = await fetchScholarshipFoundation(scholarshipId);
-      setFoundationDescription(res.data.foundationInformation);
-    };
-    fetchFoundation();
-  }, [scholarshipId]);
+  useQuery({
+    queryKey: ['announcements', scholarshipId, 'scholarship-foundations'],
+    queryFn: async () => {
+      const res = await axios.get(
+        `/announcements/${scholarshipId}/scholarship-foundations`,
+      );
+      setFoundationDescription(res.data.data.foundationInformation);
+      return res.data;
+    },
+  });
+
+  const summarizeFoundation = useMutation({
+    mutationFn: async (content: string) => {
+      const res = await axios.post('/foundation/summary', {
+        title: '공고 요약',
+        content,
+      });
+      setFoundationSummary(res.data.data.summary);
+      return res.data;
+    },
+  });
 
   const handleGetFoundationSummary = async () => {
-    const res = await fetchScholarshipFoundationSummary(foundationDescription);
-    setFoundationSummary(res.data.summary);
+    summarizeFoundation.mutate(foundationDescription);
     setIsSummaryModalOpen(true);
   };
 

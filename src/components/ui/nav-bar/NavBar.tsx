@@ -1,55 +1,54 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
-import MenuIcon from "../icon/MenuIcon";
-import SearchIcon from "../icon/SearchIcon";
-import Drawer, { DrawerProps } from "./Drawer";
-import SearchBarModal from "./SearchBarModal";
-import SearchBar from "./SearchBar";
-import ProfileDesktop from "./ProfileDesktop";
-import PopUp from "../PopUp";
-import { getTokenCookie } from "../../../actions/cookies";
-import { fetchMyInfo } from "../../../api/mypage";
+import MenuIcon from '../icon/MenuIcon';
+import SearchIcon from '../icon/SearchIcon';
+import Drawer, { DrawerProps } from './Drawer';
+import SearchBarModal from './SearchBarModal';
+import SearchBar from './SearchBar';
+import ProfileDesktop from './ProfileDesktop';
+import PopUp from '../PopUp';
+import axios from '../../../api/axios';
 
 const NavBar = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
   const [isSearchBarOpen, setIsSearchBarOpen] = useState<boolean>(false);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
-  const [nickname, setNickname] = useState<string>("");
+  const [nickname, setNickname] = useState<string>('');
   const [isSearchBarPopUpOpen, setIsSearchBarPopUpOpen] =
     useState<boolean>(false);
 
-  const menuList: DrawerProps["menuList"] = [
+  const menuList: DrawerProps['menuList'] = [
     {
-      label: "전체 장학금",
-      iconSrc: "/icons/menu/all-scholarships-icon.svg",
-      href: "/scholarships",
-      color: "default",
+      label: '전체 장학금',
+      iconSrc: '/icons/menu/all-scholarships-icon.svg',
+      href: '/scholarships',
+      color: 'default',
     },
     {
-      label: "맞춤 장학금",
-      iconSrc: "/icons/menu/articles-icon.svg",
-      href: "/recommend",
-      color: "default",
+      label: '맞춤 장학금',
+      iconSrc: '/icons/menu/articles-icon.svg',
+      href: '/recommend',
+      color: 'default',
     },
     {
-      label: "내 장학금",
-      iconSrc: "/icons/menu/my-scholarships-icon.svg",
-      href: "/my-scholarships/date",
-      color: "default",
+      label: '내 장학금',
+      iconSrc: '/icons/menu/my-scholarships-icon.svg',
+      href: '/my-scholarships/date',
+      color: 'default',
     },
     {
-      label: "자기소개서",
-      iconSrc: "/icons/menu/cover-letters-icon.svg",
-      href: "/cover-letters",
-      color: "default",
+      label: '자기소개서',
+      iconSrc: '/icons/menu/cover-letters-icon.svg',
+      href: '/cover-letters',
+      color: 'default',
     },
     {
-      label: "아티클",
-      iconSrc: "/icons/menu/articles-icon.svg",
-      href: "/articles",
-      color: "default",
+      label: '아티클',
+      iconSrc: '/icons/menu/articles-icon.svg',
+      href: '/articles',
+      color: 'default',
     },
   ];
 
@@ -58,19 +57,13 @@ const NavBar = () => {
   };
 
   useEffect(() => {
-    const fetchCookieAndLogIn = async () => {
-      const token = await getTokenCookie();
+    const fetchData = async () => {
+      const token = localStorage.getItem('access-token');
       setIsLoggedIn(token !== null);
+      const res = await axios.get('/members/my-page');
+      setNickname(res.data.data.nickname);
     };
-    fetchCookieAndLogIn();
-  }, []);
-
-  useEffect(() => {
-    const fetchMyInfoLogic = async () => {
-      const res = await fetchMyInfo();
-      setNickname(res.data.nickname);
-    };
-    fetchMyInfoLogic();
+    fetchData();
   }, []);
 
   const handleSearchBarSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -133,12 +126,12 @@ const NavBar = () => {
               <ul className="flex items-center gap-9">
                 {menuList.map(
                   (menu, index) =>
-                    menu.screenOnly !== "MOBILE" &&
+                    menu.screenOnly !== 'MOBILE' &&
                     !menu.hidden && (
                       <li key={index} className="text-lg-200 text-gray-60">
                         <Link to={menu.href}>{menu.label}</Link>
                       </li>
-                    )
+                    ),
                 )}
               </ul>
             </nav>
@@ -162,10 +155,10 @@ const NavBar = () => {
       {isSearchBarPopUpOpen && (
         <PopUp
           confirmButton={{
-            label: "확인",
+            label: '확인',
           }}
           cancelButton={{
-            label: "취소",
+            label: '취소',
           }}
           onConfirm={() => setIsSearchBarPopUpOpen(false)}
           onCancel={() => setIsSearchBarPopUpOpen(false)}

@@ -1,8 +1,7 @@
 import clsx from 'clsx';
-
-import CheckboxIcon from '@/components/ui/icon/CheckboxIcon';
-import ChevronRightIcon from '@/components/ui/icon/ChevronRightIcon';
-import SquareIcon from '@/components/ui/icon/SquareIcon';
+import CheckboxIcon from '../../../ui/icon/CheckboxIcon';
+import SquareIcon from '../../../ui/icon/SquareIcon';
+import ChevronRightIcon from '../../../ui/icon/ChevronRightIcon';
 
 export interface DocumentListProps {
   title: string;

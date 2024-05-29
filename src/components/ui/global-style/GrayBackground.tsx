@@ -1,13 +1,16 @@
-'use client';
+import { useEffect } from 'react';
 
 const GrayBackground = () => {
-  return (
-    <style jsx global>{`
-      body {
-        background-color: #f2f2f3;
-      }
-    `}</style>
-  );
+  useEffect(() => {
+    const body = document.querySelector('body') as HTMLElement;
+    body.style.backgroundColor = '#f2f2f3';
+
+    return () => {
+      body.style.backgroundColor = '#ffffff';
+    };
+  }, []);
+
+  return null;
 };
 
 export default GrayBackground;

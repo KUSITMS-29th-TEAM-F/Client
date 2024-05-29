@@ -1,13 +1,8 @@
-'use client';
-
 import clsx from 'clsx';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-
-import Image from 'next/image';
+import { Link, useLocation } from 'react-router-dom';
 
 const Header = () => {
-  const pathname = usePathname();
+  const location = useLocation();
 
   const topMenuList: {
     label: string;
@@ -17,17 +12,17 @@ const Header = () => {
     {
       label: '지원 일정',
       href: '/my-scholarships/date',
-      active: pathname === '/my-scholarships/date',
+      active: location.pathname === '/my-scholarships/date',
     },
     {
       label: '지원 목록',
       href: '/my-scholarships/list',
-      active: pathname === '/my-scholarships/list',
+      active: location.pathname === '/my-scholarships/list',
     },
     {
       label: '찜한 공고',
       href: '/my-scholarships/favorite',
-      active: pathname === '/my-scholarships/favorite',
+      active: location.pathname === '/my-scholarships/favorite',
     },
   ];
 
@@ -37,7 +32,7 @@ const Header = () => {
         <div className="mx-auto max-w-screen-lg">
           <div className="flex items-center gap-3 px-4 py-3 lg:px-0">
             <div>
-              <Image
+              <img
                 src="/icons/menu/my-scholarships-icon.svg"
                 alt="내 장학금"
                 width={20}
@@ -51,7 +46,7 @@ const Header = () => {
               {topMenuList.map((menu, index) => (
                 <li key={index}>
                   <Link
-                    href={menu.href}
+                    to={menu.href}
                     className={clsx({
                       'title-sm-300 text-gray-70': menu.active,
                       'title-sm-200 text-gray-30': !menu.active,

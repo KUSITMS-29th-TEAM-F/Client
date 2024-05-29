@@ -1,10 +1,7 @@
-'use client';
-
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import clsx from 'clsx';
+import { Link, useNavigate } from 'react-router-dom';
 
 import ChevronLeftIcon from './icon/ChevronLeftIcon';
-import clsx from 'clsx';
 
 interface BackButtonProps {
   label?: string;
@@ -13,20 +10,20 @@ interface BackButtonProps {
 }
 
 const BackButton = ({ label, backUrl, onClick }: BackButtonProps) => {
-  const router = useRouter();
+  const navigate = useNavigate();
 
   const handleBackButtonClick = () => {
     if (onClick) {
       onClick();
     }
     if (backUrl === '-1') {
-      router.back();
+      navigate(-1);
     }
   };
 
   return (
     <Link
-      href={backUrl === undefined || backUrl === '-1' ? '#' : backUrl}
+      to={backUrl === undefined || backUrl === '-1' ? '#' : backUrl}
       className="flex items-center gap-1 text-gray-40"
       onClick={handleBackButtonClick}
     >

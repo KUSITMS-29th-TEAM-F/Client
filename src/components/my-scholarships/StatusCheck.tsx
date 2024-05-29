@@ -1,25 +1,38 @@
-'use client';
-
+import clsx from 'clsx';
 import { useState } from 'react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import ChevronRightIcon from '../ui/icon/ChevronRightIcon';
-import clsx from 'clsx';
 import CheckIcon from '../ui/icon/CheckIcon';
-import { changeMyScholarshipStatus } from '@/api/my-scholarship';
-import { useRouter } from 'next/navigation';
+import axios from '../../api/axios';
 
 interface StatusCheckProps {
-  applyId: number;
-  initialStatus: string;
+  myScholarshipId: number;
+  status: string;
 }
 
-const StatusCheck = ({ applyId, initialStatus }: StatusCheckProps) => {
-  const router = useRouter();
+const StatusCheck = ({ myScholarshipId, status }: StatusCheckProps) => {
+  const queryClient = useQueryClient();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [status, setStatus] = useState(initialStatus);
 
   const valueList = ['지원예정', '지원완료', '합격', '불합격'];
+
+  const changeMyScholarshipStatuss = useMutation({
+    mutationFn: async (status: number) => {
+      const res = await axios.patch(
+        `/apply-list/apply-status/${myScholarshipId}`,
+        {
+          applyStatus: status,
+        },
+      );
+      return res.data;
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['apply-list'] });
+      setIsMenuOpen(false);
+    },
+  });
 
   const handleMenuOpen = () => {
     setIsMenuOpen(true);
@@ -34,10 +47,7 @@ const StatusCheck = ({ applyId, initialStatus }: StatusCheckProps) => {
     value: string,
   ) => {
     e.stopPropagation();
-    await changeMyScholarshipStatus(applyId, valueList.indexOf(value));
-    setStatus(value);
-    router.refresh();
-    setIsMenuOpen(!isMenuOpen);
+    changeMyScholarshipStatuss.mutate(valueList.indexOf(value));
   };
 
   return (

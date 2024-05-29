@@ -1,4 +1,3 @@
-import Dropdown from '@/components/ui/Dropdown';
 import BinarySelect from '../BinarySelect';
 import FormControl from '../FormControl';
 import Input from '../Input';
@@ -10,9 +9,10 @@ import {
   maxGpaList,
   universityCityList,
   universityTypeList,
-} from '@/constants/optionList';
+} from '../../../constants/optionList';
 import PrivacySectionLayout from './PrivacySectionLayout';
-import { PrivacySectionProps } from '@/interfaces/privacy';
+import Dropdown from '../Dropdown';
+import { PrivacySectionProps } from '../../../interfaces/privacy';
 
 const SecondPrivacySection = ({
   isVisible,

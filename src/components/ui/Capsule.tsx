@@ -1,8 +1,8 @@
 import clsx from 'clsx';
-import Link from 'next/link';
+import { Link } from 'react-router-dom';
 
 interface CapsuleProps extends React.HTMLAttributes<HTMLElement> {
-  href?: string;
+  to?: string;
   as?: React.ElementType;
   className?: string;
   variant?:
@@ -17,18 +17,18 @@ interface CapsuleProps extends React.HTMLAttributes<HTMLElement> {
 }
 
 const Capsule = ({
-  href,
+  to: to,
   children,
   variant = 'default',
   className,
   size,
-  as: Wrapper = href ? Link : 'div',
+  as: Wrapper = to ? Link : 'div',
   ...props
 }: CapsuleProps) => {
   return (
     <Wrapper
       {...props}
-      href={href}
+      to={to}
       className={clsx(
         'rounded-full',
         className,

@@ -1,7 +1,6 @@
-'use client';
-
 import clsx from 'clsx';
 import { useState } from 'react';
+
 import DetailContentTab from '../tab-content/DetailContentTab';
 import SubmissionTab from '../tab-content/SubmissionTab';
 import FoundationTab from '../tab-content/FoundationTab';
@@ -46,18 +45,22 @@ const ScholarshipTabSection = ({
             </li>
           ))}
         </ul>
-        {tabActiveIndex === 0 ? (
-          <DetailContentTab detailContents={detailContents} />
-        ) : tabActiveIndex === 1 ? (
-          <SubmissionTab scholarshipId={scholarshipId} />
-        ) : tabActiveIndex === 2 ? (
-          <FoundationTab
-            scholarshipId={scholarshipId}
-            foundation={foundation}
-          />
-        ) : (
-          tabActiveIndex === 3 && <CommentsTab scholarshipId={scholarshipId} />
-        )}
+        <div className="min-h-[30rem]">
+          {tabActiveIndex === 0 ? (
+            <DetailContentTab detailContents={detailContents} />
+          ) : tabActiveIndex === 1 ? (
+            <SubmissionTab scholarshipId={scholarshipId} />
+          ) : tabActiveIndex === 2 ? (
+            <FoundationTab
+              scholarshipId={scholarshipId}
+              foundation={foundation}
+            />
+          ) : (
+            tabActiveIndex === 3 && (
+              <CommentsTab scholarshipId={scholarshipId} />
+            )
+          )}
+        </div>
       </div>
     </section>
   );

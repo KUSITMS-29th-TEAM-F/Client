@@ -1,26 +1,35 @@
-import Image from 'next/image';
-import Link from 'next/link';
+import { Link } from 'react-router-dom';
+import Capsule from '../components/ui/Capsule';
+import HeartFilledIcon from '../components/ui/icon/HeartFilledIcon';
+import { useQuery } from '@tanstack/react-query';
+import axios from '../api/axios';
+import { useState } from 'react';
 
-import Capsule from '@/components/ui/Capsule';
-import HeartFilledIcon from '@/components/ui/icon/HeartFilledIcon';
-import { fetchFavoriteScholarships } from '@/api/my-scholarship';
+const MyScholarshipsFavorite = () => {
+  const [scholarshipList, setScholarshipList] = useState<
+    {
+      scholarshipId: number;
+      scholarShipImage: string;
+      scholarshipName: string;
+      scholarshipFoundation: string;
+      scholarshipStatus: string;
+      applicationPeriod: string;
+      remainingDays: number;
+      applyPossible: string;
+      startDate: string;
+      endDate: string;
+      status: 'PASS' | 'FAIL' | 'NONE';
+    }[]
+  >([]);
 
-const MyScholarshipsFavoritePage = async () => {
-  const res = await fetchFavoriteScholarships();
-
-  const scholarshipList: {
-    scholarshipId: number;
-    scholarShipImage: string;
-    scholarshipName: string;
-    scholarshipFoundation: string;
-    scholarshipStatus: string;
-    applicationPeriod: string;
-    remainingDays: number;
-    applyPossible: string;
-    startDate: string;
-    endDate: string;
-    status: 'PASS' | 'FAIL' | 'NONE';
-  }[] = res.data.announcementResponseList;
+  useQuery({
+    queryKey: ['announcements', 'likes'],
+    queryFn: async () => {
+      const res = await axios.get('/announcements/likes');
+      setScholarshipList(res.data.data.announcementResponseList);
+      return res.data;
+    },
+  });
 
   return (
     <main className="p-4 pb-16">
@@ -28,7 +37,7 @@ const MyScholarshipsFavoritePage = async () => {
         {scholarshipList.map((scholarship) => (
           <li key={scholarship.scholarshipId}>
             <Link
-              href={`/scholarships/${scholarship.scholarshipId}`}
+              to={`/scholarships/${scholarship.scholarshipId}`}
               className="flex flex-col gap-3 rounded-2xl border border-gray-10 bg-gray-00 p-4 pb-3"
             >
               <div className="flex items-center justify-between">
@@ -55,7 +64,7 @@ const MyScholarshipsFavoritePage = async () => {
               </div>
               <div className="flex items-start gap-4">
                 <div className="overflow-hidden rounded-lg">
-                  <Image
+                  <img
                     src={scholarship.scholarShipImage}
                     alt={scholarship.scholarshipName}
                     width={64}
@@ -82,4 +91,4 @@ const MyScholarshipsFavoritePage = async () => {
   );
 };
 
-export default MyScholarshipsFavoritePage;
+export default MyScholarshipsFavorite;

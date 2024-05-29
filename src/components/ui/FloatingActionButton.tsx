@@ -14,7 +14,7 @@ const FloatingActionButton = ({
   return (
     <div className="fixed bottom-8 left-1/2 z-30 -translate-x-1/2">
       <Capsule
-        href={href}
+        to={href}
         size="lg"
         variant="primary"
         className="flex items-center gap-1 shadow-[0px_8px_16px_0px_rgba(0,0,0,0.10)]"

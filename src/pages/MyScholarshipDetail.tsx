@@ -1,23 +1,25 @@
-import Image from 'next/image';
+import { useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 
-import DotsMenuWrapper from '@/components/cover-letter/DotsMenuWrapper';
-import HeaderHide from '@/components/my-scholarships/HeaderHide';
-import BackButtonHeader from '@/components/ui/BackButtonHeader';
-import Button from '@/components/ui/Button';
-import Divider from '@/components/ui/Divider';
-import WhiteBackground from '@/components/ui/global-style/WhiteBackground';
-import BookmarkFilledIcon from '@/components/ui/icon/BookmarkFilledIcon';
-import ChevronRightIcon from '@/components/ui/icon/ChevronRightIcon';
-import FileDescriptionIcon from '@/components/ui/icon/FileDescriptionIcon';
-import MessageDotsIcon from '@/components/ui/icon/MessageDotsIcon';
-import PencilIcon from '@/components/ui/icon/PencilIcon';
-import Link from 'next/link';
-import { fetchMyScholarship } from '@/api/my-scholarship';
-import StatusCheck from '@/components/my-scholarships/StatusCheck';
+import HeaderHide from '../components/my-scholarships/HeaderHide';
+import BackButtonHeader from '../components/ui/BackButtonHeader';
+import StatusCheck from '../components/my-scholarships/StatusCheck';
+import BookmarkFilledIcon from '../components/ui/icon/BookmarkFilledIcon';
+import ChevronRightIcon from '../components/ui/icon/ChevronRightIcon';
+import Button from '../components/ui/Button';
+import MessageDotsIcon from '../components/ui/icon/MessageDotsIcon';
+import Divider from '../components/ui/Divider';
+import PencilIcon from '../components/ui/icon/PencilIcon';
+import FileDescriptionIcon from '../components/ui/icon/FileDescriptionIcon';
+import DotsMenuWrapper from '../components/cover-letter/DotsMenuWrapper';
+import axios from '../api/axios';
+import WhiteBackground from '../components/ui/global-style/WhiteBackground';
 
-const MyScholarshipPage = async ({ params }: { params: { id: number } }) => {
-  const res = await fetchMyScholarship(params.id);
-  const myScholarship: {
+const MyScholarshipDetail = () => {
+  const params = useParams<{ id: string }>();
+
+  const [myScholarship, setMyScholarship] = useState<{
     applyId: number;
     announcementId: number;
     applyStatus: string;
@@ -29,7 +31,27 @@ const MyScholarshipPage = async ({ params }: { params: { id: number } }) => {
       coverLetterId: number;
       title: string;
     }[];
-  } = res.data;
+  }>({
+    applyId: 1,
+    announcementId: 1,
+    applyStatus: 'APPLYING',
+    announcementImageUrl: '/images/scholarship/scholarship1.jpeg',
+    scholarShipName: '월곡주얼리',
+    scholarShipFoundation: '서울시',
+    applicationPeriod: '2024.05.01 ~ 2024.05.31',
+    myCoverLetterList: [],
+  });
+
+  const myScholarshipId = Number(params.id);
+
+  useQuery({
+    queryKey: ['apply-list', myScholarshipId],
+    queryFn: async () => {
+      const res = await axios.get(`/apply-list/${myScholarshipId}`);
+      setMyScholarship(res.data.data);
+      return res.data;
+    },
+  });
 
   const coverLetterList: {
     coverLetterId: number;
@@ -74,18 +96,18 @@ const MyScholarshipPage = async ({ params }: { params: { id: number } }) => {
       <div className="mx-auto max-w-screen-lg">
         <div className="grid grid-cols-1 md:grid-cols-2 md:gap-6">
           <div className="relative aspect-square w-full">
-            <Image
+            <img
               src={myScholarship.announcementImageUrl}
               alt={myScholarship.scholarShipName}
-              fill
+              className="h-full w-full object-cover"
             />
           </div>
           <div className="flex flex-col justify-between">
             <div>
               <div className="flex items-center justify-between px-4 py-4 pb-0 md:px-0">
                 <StatusCheck
-                  applyId={params.id}
-                  initialStatus={myScholarship.applyStatus}
+                  myScholarshipId={myScholarshipId}
+                  status={myScholarship.applyStatus}
                 />
                 <div>
                   <span className="text-[1.5rem] text-primary">
@@ -109,7 +131,7 @@ const MyScholarshipPage = async ({ params }: { params: { id: number } }) => {
             </div>
             <div>
               <Link
-                href={`/scholarships/${myScholarship.announcementId}`}
+                to={`/scholarships/${myScholarship.announcementId}`}
                 className="flex w-full items-center justify-center gap-1 border border-gray-05 py-4 text-gray-40"
               >
                 <span className="text-md-200">공고로 이동하기</span>
@@ -138,7 +160,7 @@ const MyScholarshipPage = async ({ params }: { params: { id: number } }) => {
             <div className="flex items-center justify-between p-4">
               <h2 className="title-sm-300 text-gray-80">작성한 자기소개서</h2>
               <Link
-                href="/cover-letters/new"
+                to="/cover-letters/new"
                 className="flex items-center gap-1 text-primary"
               >
                 <span className="text-[1.125rem]">
@@ -154,7 +176,7 @@ const MyScholarshipPage = async ({ params }: { params: { id: number } }) => {
                   className="border-b border-gray-05 last:border-b-0"
                 >
                   <Link
-                    href={`/cover-letters/${coverLetter.coverLetterId}`}
+                    to={`/cover-letters/${coverLetter.coverLetterId}`}
                     className="flex flex-col gap-2 px-6 py-5"
                   >
                     <div className="flex items-center justify-between">
@@ -184,4 +206,4 @@ const MyScholarshipPage = async ({ params }: { params: { id: number } }) => {
   );
 };
 
-export default MyScholarshipPage;
+export default MyScholarshipDetail;

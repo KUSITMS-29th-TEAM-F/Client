@@ -1,28 +1,26 @@
-'use client';
-
-import { fetchLike, fetchSave, fetchScholarship } from '@/api/scholarship';
-import BookmarkFilledIcon from '@/components/ui/icon/BookmarkFilledIcon';
-import BookmarkIcon from '@/components/ui/icon/BookmarkIcon';
-import HeartFilledIcon from '@/components/ui/icon/HeartFilledIcon';
-import HeartIcon from '@/components/ui/icon/HeartIcon';
-import ShareIcon from '@/components/ui/icon/ShareIcon';
+import ShareIcon from '../../../ui/icon/ShareIcon';
+import HeartFilledIcon from '../../../ui/icon/HeartFilledIcon';
+import HeartIcon from '../../../ui/icon/HeartIcon';
 import clsx from 'clsx';
-import { useEffect, useState } from 'react';
+import BookmarkFilledIcon from '../../../ui/icon/BookmarkFilledIcon';
+import BookmarkIcon from '../../../ui/icon/BookmarkIcon';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import axios from '../../../../api/axios';
 
 interface ScholarshipBottomActionProps {
   memberIsLiked: boolean;
   likes: number;
   scholarshipId: number;
+  memberIsStored: boolean;
 }
 
 const ScholarshipBottomAction = ({
   memberIsLiked,
   likes,
   scholarshipId,
+  memberIsStored,
 }: ScholarshipBottomActionProps) => {
-  const [isLiked, setIsLiked] = useState<boolean>(memberIsLiked);
-  const [likeCount, setLikeCount] = useState<number>(likes);
-  const [isSaved, setIsSaved] = useState<boolean>(false);
+  const queryClient = useQueryClient();
 
   const actionList: {
     icon: React.ReactNode;
@@ -35,33 +33,68 @@ const ScholarshipBottomAction = ({
       text: '공유하기',
     },
     {
-      icon: isLiked ? <HeartFilledIcon /> : <HeartIcon />,
-      text: `${likeCount}`,
-      active: isLiked,
-      onClick: () => handleLike(),
+      icon: memberIsLiked ? <HeartFilledIcon /> : <HeartIcon />,
+      text: `${likes}`,
+      active: memberIsLiked,
+      onClick: () => handleLikeButtonClick(),
     },
   ];
 
-  const handleLike = async () => {
-    await fetchLike(scholarshipId, !isLiked);
-    setIsLiked(!isLiked);
-    setLikeCount(isLiked ? likeCount - 1 : likeCount + 1);
+  const handleLike = useMutation({
+    mutationFn: async () => {
+      const res = await axios.post(`/announcements/${scholarshipId}/likes`);
+      return res.data;
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['announcements'] });
+    },
+  });
+
+  const deleteLike = useMutation({
+    mutationFn: async () => {
+      const res = await axios.delete(`/announcements/${scholarshipId}/likes`);
+      return res.data;
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['announcements'] });
+    },
+  });
+
+  const handleSave = useMutation({
+    mutationFn: async () => {
+      const res = await axios.post(`/announcements/${scholarshipId}`);
+      return res.data;
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['announcements'] });
+    },
+  });
+
+  const cancelSave = useMutation({
+    mutationFn: async () => {
+      const res = await axios.delete(`/members/application/${scholarshipId}`);
+      return res.data;
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['announcements'] });
+    },
+  });
+
+  const handleLikeButtonClick = async () => {
+    if (memberIsLiked) {
+      deleteLike.mutate();
+    } else {
+      handleLike.mutate();
+    }
   };
 
-  const handleSave = async () => {
-    await fetchSave(scholarshipId, !isSaved);
-    setIsSaved(!isSaved);
+  const handleSaveButtonClick = async () => {
+    if (memberIsStored) {
+      cancelSave.mutate();
+    } else {
+      handleSave.mutate();
+    }
   };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const res = await fetchScholarship(scholarshipId);
-      setLikeCount(res.data.likes);
-      setIsLiked(res.data.memberIsLiked);
-      setIsSaved(res.data.memberIsStored);
-    };
-    fetchData();
-  }, []);
 
   return (
     <div className="fixed bottom-0 left-0 z-10 h-[4rem] w-full border-t border-gray-10 bg-gray-00 pl-4">
@@ -88,16 +121,18 @@ const ScholarshipBottomAction = ({
         ))}
         <button
           className="col-span-3 flex items-center justify-center gap-2.5 bg-primary text-gray-00"
-          onClick={handleSave}
+          onClick={handleSaveButtonClick}
         >
           <span className="text-[1.5rem]">
-            {isSaved ? (
+            {memberIsStored ? (
               <BookmarkFilledIcon />
             ) : (
               <BookmarkIcon strokeWidth={2.5} />
             )}
           </span>
-          <span className="text-lg-300">{isSaved ? '저장됨' : '저장하기'}</span>
+          <span className="text-lg-300">
+            {memberIsStored ? '저장됨' : '저장하기'}
+          </span>
         </button>
       </div>
     </div>

@@ -1,15 +1,13 @@
-'use client';
-
 import { useEffect, useState } from 'react';
-import { fetchAllScholarship } from '@/api/scholarship';
-import { ScholarshipListContentProps } from '@/components/ui/ScholarshipListContent';
-import GrayBackground from '@/components/ui/global-style/GrayBackground';
-import clsx from 'clsx';
-import Image from 'next/image';
-import Link from 'next/link';
-import Capsule from '@/components/ui/Capsule';
 
-const ScholarshipListPage = () => {
+import { ScholarshipListContentProps } from '../components/ui/ScholarshipListContent';
+import axios from '../api/axios';
+import clsx from 'clsx';
+import Capsule from '../components/ui/Capsule';
+import { Link } from 'react-router-dom';
+import GrayBackground from '../components/ui/global-style/GrayBackground';
+
+const AllScholarships = () => {
   const [scholarshipList, setScholarshipList] = useState<
     ScholarshipListContentProps['scholarshipList']
   >([]);
@@ -34,8 +32,10 @@ const ScholarshipListPage = () => {
       const filterStatus = filterStatusRaw.filter(
         (_, index) => filterActiveIndexList[index],
       );
-      const res = await fetchAllScholarship(filterStatus);
-      setScholarshipList(res.data.announcementResponseList);
+      const res = await axios.get(`/announcements`, {
+        params: { status: filterStatus },
+      });
+      setScholarshipList(res.data.data.announcementResponseList);
     };
     fetchData();
   }, [filterActiveIndexList]);
@@ -49,7 +49,7 @@ const ScholarshipListPage = () => {
             <div className="flex items-center justify-between border-b border-gray-05 pb-4 pt-3">
               <div className="flex items-center justify-start gap-3">
                 <div>
-                  <Image src={icon} alt={title} width={24} height={24} />
+                  <img src={icon} alt={title} width={24} height={24} />
                 </div>
                 <h1 className="title-md-300 text-gray-80">{title}</h1>
                 <span className="title-md-100 text-gray-30">
@@ -88,7 +88,7 @@ const ScholarshipListPage = () => {
           {scholarshipList.map((scholarship) => (
             <li key={scholarship.scholarshipId}>
               <Link
-                href={`/scholarships/${scholarship.scholarshipId}`}
+                to={`/scholarships/${scholarship.scholarshipId}`}
                 className="block rounded-2xl bg-white p-4"
               >
                 <div className="flex flex-col gap-3">
@@ -117,7 +117,7 @@ const ScholarshipListPage = () => {
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="overflow-hidden rounded-lg">
-                      <Image
+                      <img
                         src={scholarship.scholarShipImage}
                         alt={scholarship.scholarshipName}
                         width={64}
@@ -146,4 +146,4 @@ const ScholarshipListPage = () => {
   );
 };
 
-export default ScholarshipListPage;
+export default AllScholarships;

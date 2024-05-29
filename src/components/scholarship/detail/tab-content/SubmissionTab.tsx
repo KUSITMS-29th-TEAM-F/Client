@@ -1,11 +1,10 @@
-import { useEffect, useState } from 'react';
-
-import ChevronRightIcon from '@/components/ui/icon/ChevronRightIcon';
-import PencilIcon from '@/components/ui/icon/PencilIcon';
+import { useState } from 'react';
 import DocumentList, { DocumentListProps } from '../document-list/DocumentList';
-import { usePathname } from 'next/navigation';
-import { fetchScholarshipDocumentList } from '@/api/scholarship';
-import Link from 'next/link';
+import { Link } from 'react-router-dom';
+import ChevronRightIcon from '../../../ui/icon/ChevronRightIcon';
+import PencilIcon from '../../../ui/icon/PencilIcon';
+import { useQuery } from '@tanstack/react-query';
+import axios from '../../../../api/axios';
 
 interface SubmissionTabProps {
   scholarshipId: number;
@@ -16,18 +15,28 @@ const SubmissionTab = ({ scholarshipId }: SubmissionTabProps) => {
     DocumentListProps['documentList']
   >([]);
 
-  useEffect(() => {
-    const fetchDocumentList = async () => {
-      const res = await fetchScholarshipDocumentList(scholarshipId);
-      setDocumentList(res.data);
-    };
-    fetchDocumentList();
-  }, []);
+  useQuery({
+    queryKey: ['announcements', scholarshipId, 'required-documents'],
+    queryFn: async () => {
+      const res = await axios.get(
+        `/announcements/${scholarshipId}/required-documents`,
+      );
+      setDocumentList(res.data.data);
+      return res.data;
+    },
+  });
+
+  const neccessaryDocumentList = documentList.filter(
+    (document) => document.requiredOptions === 'NECESSARY',
+  );
+  const optionalDocumentList = documentList.filter(
+    (document) => document.requiredOptions === 'OPTION',
+  );
 
   return (
     <div className="p-4">
       <Link
-        href="/cover-letters/new"
+        to="/cover-letters/new"
         className="flex w-full items-center justify-between rounded-2xl bg-primary p-4 pl-6 text-gray-00"
       >
         <div className="flex flex-col gap-2">
@@ -46,18 +55,15 @@ const SubmissionTab = ({ scholarshipId }: SubmissionTabProps) => {
         </div>
       </Link>
       <div className="mt-10 flex flex-col gap-10">
-        <DocumentList
-          title="필수 서류"
-          documentList={documentList.filter(
-            (document) => document.requiredOptions === 'NECESSARY',
-          )}
-        />
-        <DocumentList
-          title="추가 서류"
-          documentList={documentList.filter(
-            (document) => document.requiredOptions === 'OPTION',
-          )}
-        />
+        {neccessaryDocumentList.length > 0 && (
+          <DocumentList
+            title="필수 서류"
+            documentList={neccessaryDocumentList}
+          />
+        )}
+        {optionalDocumentList.length > 0 && (
+          <DocumentList title="추가 서류" documentList={optionalDocumentList} />
+        )}
       </div>
     </div>
   );

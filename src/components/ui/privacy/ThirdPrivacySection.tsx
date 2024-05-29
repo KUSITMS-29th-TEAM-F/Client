@@ -1,4 +1,3 @@
-import Dropdown from '@/components/ui/Dropdown';
 import FormControl from '../FormControl';
 import UnitInput from '../UnitInput';
 import MultipleSelect from '../MultipleSelect';
@@ -6,9 +5,10 @@ import {
   incomeBracketList,
   socialSupportBracketList,
   supportIncomeBracketList,
-} from '@/constants/optionList';
+} from '../../../constants/optionList';
 import PrivacySectionLayout from './PrivacySectionLayout';
-import { PrivacySectionProps } from '@/interfaces/privacy';
+import Dropdown from '../Dropdown';
+import { PrivacySectionProps } from '../../../interfaces/privacy';
 
 const ThirdPrivacySection = ({
   isVisible,

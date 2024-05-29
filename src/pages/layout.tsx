@@ -1,8 +1,6 @@
-import { Outlet } from "react-router-dom";
-import NavBar from "../components/ui/nav-bar/NavBar";
+import { Outlet } from 'react-router-dom';
 
-import "./globals.css";
-import "/public/styles/font.css";
+import NavBar from '../components/ui/nav-bar/NavBar';
 
 const Layout = () => {
   return (
