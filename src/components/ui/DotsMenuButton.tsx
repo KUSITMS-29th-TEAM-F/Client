@@ -1,5 +1,3 @@
-'use client';
-
 import clsx from 'clsx';
 import { useEffect, useRef } from 'react';
 
@@ -23,7 +21,7 @@ const DotsMenuButton = ({
 }: DotsMenuButtonProps) => {
   const menuRef = useRef<HTMLDivElement>(null);
 
-  const handleDotsMenuButtonClick = (e: React.MouseEvent<HTMLElement>) => {
+  const handleDotsMenuButtonClick = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
@@ -48,7 +46,7 @@ const DotsMenuButton = ({
       <div ref={menuRef} className="relative">
         <span
           className="cursor-pointer text-[1.25rem] text-gray-20"
-          onClick={(e) => handleDotsMenuButtonClick(e)}
+          onClick={handleDotsMenuButtonClick}
         >
           <DotsVerticalIcon />
         </span>

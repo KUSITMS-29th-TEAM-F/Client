@@ -1,9 +1,7 @@
-'use client';
-
 import clsx from 'clsx';
 import { useEffect, useRef, useState } from 'react';
 
-import ChevronDownIcon from '@/components/ui/icon/ChevronDownIcon';
+import ChevronDownIcon from '../../ui/icon/ChevronDownIcon';
 
 const SortDropdown = () => {
   const menuRef = useRef<HTMLDivElement>(null);

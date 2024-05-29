@@ -1,10 +1,9 @@
-import Link from 'next/link';
+import { Link } from 'react-router-dom';
+
 import Filter from '../scholarship/list/Filter';
 import GrayBackground from './global-style/GrayBackground';
 import Capsule from './Capsule';
 import FavoriteButtonWrapper from './FavoriteButtonWrapper';
-import Image from 'next/image';
-import clsx from 'clsx';
 
 export interface ScholarshipListContentProps {
   title: string;
@@ -37,7 +36,7 @@ const ScholarshipListContent = ({
             <div className="flex items-center justify-between border-b border-gray-05 pb-4 pt-3">
               <div className="flex items-center justify-start gap-3">
                 <div>
-                  <Image src={iconSrc} alt={title} width={24} height={24} />
+                  <img src={iconSrc} alt={title} width={24} height={24} />
                 </div>
                 <h1 className="title-md-300 text-gray-80">{title}</h1>
                 <span className="title-md-100 text-gray-30">
@@ -58,7 +57,7 @@ const ScholarshipListContent = ({
           {scholarshipList.map((scholarship) => (
             <li key={scholarship.scholarshipId}>
               <Link
-                href={`/scholarships/${scholarship.scholarshipId}`}
+                to={`/scholarships/${scholarship.scholarshipId}`}
                 className="block rounded-2xl bg-white p-4"
               >
                 <div className="flex flex-col gap-3">
@@ -90,7 +89,7 @@ const ScholarshipListContent = ({
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="overflow-hidden rounded-lg">
-                      <Image
+                      <img
                         src={scholarship.scholarShipImage}
                         alt={scholarship.scholarshipName}
                         width={64}

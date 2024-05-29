@@ -1,8 +1,6 @@
-'use client';
-
 import { useState } from 'react';
 
-import FavoriteHeartButton from '@/components/ui/FavoriteHeartButton';
+import FavoriteHeartButton from './FavoriteHeartButton';
 
 interface FavoriteButtonWrapperProps {
   isFavorite: boolean;

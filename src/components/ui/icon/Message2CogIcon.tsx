@@ -1,4 +1,3 @@
-import React from 'react';
 import type { SVGProps } from 'react';
 
 export default function Message2CogIcon(props: SVGProps<SVGSVGElement>) {
