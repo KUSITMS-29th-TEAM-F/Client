@@ -1,9 +1,8 @@
-import clsx from "clsx";
+import clsx from 'clsx';
+import { Link, useNavigate } from 'react-router-dom';
 
-import ChevronRightIcon from "../icon/ChevronRightIcon";
-import LoginModal from "./LoginModal";
-import { Link, useNavigate } from "react-router-dom";
-import { deleteTokenCookie } from "../../../actions/cookies";
+import ChevronRightIcon from '../icon/ChevronRightIcon';
+import LoginModal from './LoginModal';
 
 export interface DrawerProps {
   isDrawerOpen: boolean;
@@ -12,10 +11,10 @@ export interface DrawerProps {
     label: string;
     iconSrc: string;
     href: string;
-    color: "default" | "danger";
+    color: 'default' | 'danger';
     topDivider?: boolean;
     hidden?: boolean;
-    screenOnly?: "DESKTOP" | "MOBILE";
+    screenOnly?: 'DESKTOP' | 'MOBILE';
     onClick?: () => void;
   }[];
   isLoggedIn: boolean | null;
@@ -42,32 +41,39 @@ const Drawer = ({
   const handleProfileClick = () => {
     if (isLoggedIn) {
       setIsDrawerOpen(false);
-      navigate("/me");
+      navigate('/me');
     } else {
       setIsDrawerOpen(false);
       setIsLoginModalOpen(true);
     }
   };
 
+  const handleLogoutClick = () => {
+    localStorage.removeItem('access-token');
+    localStorage.removeItem('refresh-token');
+    setIsDrawerOpen(false);
+    window.location.href = '/';
+  };
+
   return (
     <>
       <div
         className={clsx(
-          "fixed right-0 top-0 z-50 flex h-screen w-full justify-end bg-black transition-colors duration-300",
+          'fixed right-0 top-0 z-50 flex h-screen w-full justify-end bg-black transition-colors duration-300',
           {
-            "bg-opacity-50": isDrawerOpen,
-            "pointer-events-none bg-opacity-0": !isDrawerOpen,
-          }
+            'bg-opacity-50': isDrawerOpen,
+            'pointer-events-none bg-opacity-0': !isDrawerOpen,
+          },
         )}
         onClick={() => setIsDrawerOpen(false)}
       >
         <div
           className={clsx(
-            "w-[20rem] bg-gray-00 transition-transform duration-300",
+            'w-[20rem] bg-gray-00 transition-transform duration-300',
             {
-              "translate-x-0": isDrawerOpen,
-              "translate-x-full": !isDrawerOpen,
-            }
+              'translate-x-0': isDrawerOpen,
+              'translate-x-full': !isDrawerOpen,
+            },
           )}
           onClick={(e) => e.stopPropagation()}
         >
@@ -83,12 +89,12 @@ const Drawer = ({
               />
             </div>
             <div
-              className={clsx("text-lg-200 flex-1", {
-                "text-gray-80": isLoggedIn,
-                "text-gray-40": !isLoggedIn,
+              className={clsx('text-lg-200 flex-1', {
+                'text-gray-80': isLoggedIn,
+                'text-gray-40': !isLoggedIn,
               })}
             >
-              {isLoggedIn ? nickname : "로그인 후 이용해주세요."}
+              {isLoggedIn ? nickname : '로그인 후 이용해주세요.'}
             </div>
             <div>
               <span className="text-[1.5rem] text-gray-40">
@@ -99,7 +105,7 @@ const Drawer = ({
           <ul>
             {menuList.map(
               (menu, index) =>
-                menu.screenOnly !== "DESKTOP" &&
+                menu.screenOnly !== 'DESKTOP' &&
                 !menu.hidden && (
                   <li key={index} onClick={menu.onClick}>
                     {menu.topDivider && (
@@ -107,9 +113,9 @@ const Drawer = ({
                     )}
                     <Link
                       to={menu.href}
-                      className={clsx("flex items-center gap-4 px-6 py-4", {
-                        "text-gray-60": menu.color === "default",
-                        "text-danger-40": menu.color === "danger",
+                      className={clsx('flex items-center gap-4 px-6 py-4', {
+                        'text-gray-60': menu.color === 'default',
+                        'text-danger-40': menu.color === 'danger',
                       })}
                       onClick={handleMenuClick}
                     >
@@ -124,16 +130,10 @@ const Drawer = ({
                       <span className="text-lg-200 flex-1">{menu.label}</span>
                     </Link>
                   </li>
-                )
+                ),
             )}
             {isLoggedIn && (
-              <li
-                onClick={() => {
-                  deleteTokenCookie();
-                  setIsDrawerOpen(false);
-                  window.location.href = "/";
-                }}
-              >
+              <li onClick={handleLogoutClick}>
                 <div className="my-2 border-t border-gray-10" />
                 <Link
                   to="#"

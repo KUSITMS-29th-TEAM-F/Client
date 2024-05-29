@@ -1,10 +1,8 @@
-'use client';
-
 import { useState } from 'react';
 
-import FileDescriptionIcon from '@/components/ui/icon/FileDescriptionIcon';
+import FileDescriptionIcon from '../../ui/icon/FileDescriptionIcon';
 import DotsMenuWrapper from './DotsMenuWrapper';
-import XIcon from '@/components/ui/icon/XIcon';
+import XIcon from '../../ui/icon/XIcon';
 
 interface DocumentItemProps {
   document: {

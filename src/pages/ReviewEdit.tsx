@@ -1,23 +1,20 @@
-'use client';
-
 import { useState } from 'react';
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { useNavigate } from 'react-router-dom';
 
-import BackButtonHeader from '@/components/ui/BackButtonHeader';
-import GrayBackground from '@/components/ui/global-style/GrayBackground';
-import Stars from '@/components/ui/Stars';
-import Button from '@/components/ui/Button';
-import PopUp from '@/components/ui/PopUp';
+import GrayBackground from '../components/ui/global-style/GrayBackground';
+import BackButtonHeader from '../components/ui/BackButtonHeader';
+import Stars from '../components/ui/Stars';
+import Button from '../components/ui/Button';
+import PopUp from '../components/ui/PopUp';
 
-const ReviewEditPage = () => {
-  const router = useRouter();
+const ReviewEdit = () => {
+  const navigate = useNavigate();
 
   const [starScore, setStarScore] = useState(3);
   const [isBackPopUpOpen, setIsBackPopUpOpen] = useState(false);
 
   const handleEditButtonClick = () => {
-    router.push('/me/reviews');
+    navigate('/me/reviews');
   };
 
   const handleBackButtonClick = () => {
@@ -26,7 +23,7 @@ const ReviewEditPage = () => {
 
   const handlePopUpConfirm = () => {
     setIsBackPopUpOpen(false);
-    router.push('/me/reviews');
+    navigate('/me/reviews');
   };
 
   const handlePopUpCancel = () => {
@@ -48,7 +45,7 @@ const ReviewEditPage = () => {
         <div className="mx-auto w-full max-w-screen-lg">
           <div className="flex items-center gap-3 rounded-2xl border border-gray-10 bg-gray-00 p-4">
             <div className="overflow-hidden rounded-lg">
-              <Image
+              <img
                 src="/images/placeholders/placeholder-image.png"
                 alt="임시 장학금 이미지"
                 width={64}
@@ -98,4 +95,4 @@ const ReviewEditPage = () => {
   );
 };
 
-export default ReviewEditPage;
+export default ReviewEdit;

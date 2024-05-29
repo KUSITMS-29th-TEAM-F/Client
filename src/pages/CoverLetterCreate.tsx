@@ -1,16 +1,14 @@
-'use client';
-
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useNavigate } from 'react-router-dom';
 
-import QuestionBox from '@/components/cover-letter/QuestionInput';
-import Dropdown from '@/components/ui/Dropdown';
-import BackButtonHeader from '@/components/ui/BackButtonHeader';
-import PopUp from '@/components/ui/PopUp';
-import GrayBackground from '@/components/ui/global-style/GrayBackground';
+import QuestionBox from '../components/cover-letter/QuestionInput';
+import BackButtonHeader from '../components/ui/BackButtonHeader';
+import Dropdown from '../components/ui/Dropdown';
+import PopUp from '../components/ui/PopUp';
+import GrayBackground from '../components/ui/global-style/GrayBackground';
 
-const CoverLetterNewPage = () => {
-  const router = useRouter();
+const CoverLetterCreate = () => {
+  const navigate = useNavigate();
 
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [isPopUpOpen, setIsPopUpOpen] = useState(false);
@@ -26,12 +24,12 @@ const CoverLetterNewPage = () => {
   };
 
   const handleSaveButtonClick = () => {
-    router.back();
+    navigate(-1);
   };
 
   const handlePopUpConfirm = () => {
     setIsPopUpOpen(false);
-    router.back();
+    navigate(-1);
   };
 
   const handlePopUpCancel = () => {
@@ -112,4 +110,4 @@ const CoverLetterNewPage = () => {
   );
 };
 
-export default CoverLetterNewPage;
+export default CoverLetterCreate;

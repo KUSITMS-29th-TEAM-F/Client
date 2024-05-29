@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import clsx from 'clsx';
 import { useNavigate } from 'react-router-dom';
 
@@ -24,6 +24,7 @@ import SecondPrivacySection from '../components/ui/privacy/SecondPrivacySection'
 import ThirdPrivacySection from '../components/ui/privacy/ThirdPrivacySection';
 import CompleteSection from '../components/onboarding/CompleteSection';
 import Button from '../components/ui/Button';
+import NavBarHide from '../components/ui/global-style/NavBarHide';
 
 const Onboarding = () => {
   const navigate = useNavigate();
@@ -119,21 +120,9 @@ const Onboarding = () => {
     handleSelectedIndexChange: handleSelectedIndexChange,
   };
 
-  useEffect(() => {
-    const navBar = document.getElementsByClassName('nav-bar')[0] as HTMLElement;
-    if (navBar) {
-      navBar.style.display = 'none';
-    }
-
-    return () => {
-      if (navBar) {
-        navBar.style.display = 'block';
-      }
-    };
-  }, []);
-
   return (
     <div className="flex h-full flex-col">
+      <NavBarHide />
       <div>
         <div className="fixed h-[3.5rem] w-full bg-white p-4">
           <div className="mx-auto grid max-w-screen-md grid-cols-3">

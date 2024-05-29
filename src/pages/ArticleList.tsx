@@ -1,6 +1,4 @@
-import NoteIcon from '@/components/ui/icon/NoteIcon';
-import Image from 'next/image';
-import Link from 'next/link';
+import { Link } from 'react-router-dom';
 
 interface ArticleList {
   id: number;
@@ -9,7 +7,7 @@ interface ArticleList {
   imageSrc: string;
 }
 
-const ArticleListPage = () => {
+const ArticleList = () => {
   const topArticle: ArticleList = {
     id: 1,
     title: '건강보험료 자격득실확인서 발급 방법은?',
@@ -57,7 +55,7 @@ const ArticleListPage = () => {
         <header>
           <section>
             <Link
-              href={`/articles/${topArticle.id}`}
+              to={`/articles/${topArticle.id}`}
               className="relative block aspect-[14/10] w-full overflow-hidden md:aspect-video md:rounded-lg"
               style={{
                 background: `linear-gradient(180deg, rgba(0, 0, 0, 0.00) 28.28%, rgba(0, 0, 0, 0.40) 100%), url(${topArticle.imageSrc}) lightgray 50% / cover no-repeat`,
@@ -76,7 +74,7 @@ const ArticleListPage = () => {
           <section>
             <div className="flex items-center gap-2 px-6 pb-2 pt-6">
               <div>
-                <Image
+                <img
                   src="/icons/menu/articles-icon.svg"
                   alt="아티클"
                   width={20}
@@ -92,11 +90,15 @@ const ArticleListPage = () => {
             {articleList.map((article) => (
               <li key={article.id}>
                 <Link
-                  href={`/articles/${article.id}`}
+                  to={`/articles/${article.id}`}
                   className="flex items-center gap-4 px-6 py-4"
                 >
                   <div className="relative aspect-square w-[5rem] overflow-hidden rounded-lg">
-                    <Image src={article.imageSrc} alt={article.title} fill />
+                    <img
+                      src={article.imageSrc}
+                      alt={article.title}
+                      className="h-full w-full object-cover"
+                    />
                   </div>
                   <div className="flex min-w-0 flex-col gap-2">
                     <h2 className="text-lg-200 line-clamp-2 text-gray-90">
@@ -116,4 +118,4 @@ const ArticleListPage = () => {
   );
 };
 
-export default ArticleListPage;
+export default ArticleList;

@@ -1,8 +1,6 @@
-import Link from 'next/link';
-
+import { useNavigate } from 'react-router-dom';
 import NavBarHide from './global-style/NavBarHide';
 import XIcon from './icon/XIcon';
-import { useRouter } from 'next/navigation';
 
 interface DialogHeaderProps {
   title: string;
@@ -17,13 +15,13 @@ const DialogHeader = ({
   closeOnClick,
   confirmButton,
 }: DialogHeaderProps) => {
-  const router = useRouter();
+  const navigate = useNavigate();
 
   const handleCloseButtonClick = () => {
     if (closeOnClick) {
       closeOnClick();
     } else {
-      router.back();
+      navigate(-1);
     }
   };
 

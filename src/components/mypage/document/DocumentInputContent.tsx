@@ -1,13 +1,12 @@
-'use client';
-
-import { addDocument, editDocument, fetchDocument } from '@/api/document';
-import DialogHeader from '@/components/ui/DialogHeader';
-import Dropdown from '@/components/ui/Dropdown';
-import FormControl from '@/components/ui/FormControl';
-import Input from '@/components/ui/Input';
-import TextArea from '@/components/ui/TextArea';
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import DialogHeader from '../../ui/DialogHeader';
+import FormControl from '../../ui/FormControl';
+import Dropdown from '../../ui/Dropdown';
+import Input from '../../ui/Input';
+import TextArea from '../../ui/TextArea';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import axios from '../../../api/axios';
 
 interface DocumentInputContentProps {
   mode: 'NEW' | 'EDIT';
@@ -18,7 +17,7 @@ const DocumentInputContent = ({
   mode,
   documentId,
 }: DocumentInputContentProps) => {
-  const router = useRouter();
+  const navigate = useNavigate();
 
   const [selectedIndexGroup, setSelectedIndexGroup] = useState<{
     document: number | null;
@@ -41,6 +40,60 @@ const DocumentInputContent = ({
     memo: '',
   });
 
+  useQuery({
+    queryKey: ['members', 'documents'],
+    queryFn: async () => {
+      const res = await axios.get(`/members/documents/${documentId}`);
+      const document = res.data.data;
+      setSelectedIndexGroup({
+        document:
+          documentItemList.indexOf(document.documentName) === -1
+            ? 0
+            : documentItemList.indexOf(document.documentName),
+        year: parseInt(document.issuedDate.split('-')[0]) - 2024,
+        month: parseInt(document.issuedDate.split('-')[1]) - 1,
+        day: parseInt(document.issuedDate.split('-')[2]) - 1,
+      });
+      setInputGroup({
+        documentName: document.documentName,
+        issuer: document.issuer || '',
+        memo: document.memo || '',
+      });
+      return res.data;
+    },
+    enabled: mode === 'EDIT' && documentId !== undefined,
+  });
+
+  const addDocument = useMutation({
+    mutationFn: async (value: {
+      documentName: string;
+      issuedDate: string;
+      issuer: string | null;
+      memo: string | null;
+    }) => {
+      const res = await axios.post('/members/documents', value);
+      return res.data;
+    },
+    onSuccess: () => {
+      navigate('/me/documents');
+    },
+  });
+
+  const editDocument = useMutation({
+    mutationFn: async (value: {
+      documentName: string;
+      issuedDate: string;
+      issuer: string | null;
+      memo: string | null;
+    }) => {
+      const res = await axios.patch(`/members/documents/${documentId}`, value);
+      return res.data;
+    },
+    onSuccess: () => {
+      navigate('/me/documents');
+    },
+  });
+
   const documentItemList: string[] = [
     '직접 입력',
     '성적증명서',
@@ -61,21 +114,10 @@ const DocumentInputContent = ({
   const monthList = Array.from({ length: 12 }, (_, i) => `${i + 1}`);
   const dayList = Array.from({ length: 31 }, (_, i) => `${i + 1}`);
 
-  const setDocumentSelectedIndex = (selectedIndex: number | null) => {
-    setSelectedIndexGroup({ ...selectedIndexGroup, document: selectedIndex });
-  };
-
-  const setYearSelectedIndex = (selectedIndex: number | null) => {
-    setSelectedIndexGroup({ ...selectedIndexGroup, year: selectedIndex });
-  };
-
-  const setMonthSelectedIndex = (selectedIndex: number | null) => {
-    setSelectedIndexGroup({ ...selectedIndexGroup, month: selectedIndex });
-  };
-
-  const setDaySelectedIndex = (selectedIndex: number | null) => {
-    setSelectedIndexGroup({ ...selectedIndexGroup, day: selectedIndex });
-  };
+  const handleSelectedIndexChange =
+    (key: string) => (selectedIndex: number | null) => {
+      setSelectedIndexGroup({ ...selectedIndexGroup, [key]: selectedIndex });
+    };
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -101,36 +143,11 @@ const DocumentInputContent = ({
       memo: inputGroup.memo === '' ? null : inputGroup.memo,
     };
     if (mode === 'EDIT' && documentId) {
-      await editDocument(value, documentId);
+      editDocument.mutate(value);
     } else if (mode === 'NEW') {
-      await addDocument(value);
+      addDocument.mutate(value);
     }
-    window.location.href = '/me/documents';
   };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      if (mode === 'EDIT' && documentId) {
-        const res = await fetchDocument(documentId);
-        const document = res.data;
-        setSelectedIndexGroup({
-          document:
-            documentItemList.indexOf(document.documentName) === -1
-              ? 0
-              : documentItemList.indexOf(document.documentName),
-          year: parseInt(document.issuedDate.split('-')[0]) - 2024,
-          month: parseInt(document.issuedDate.split('-')[1]) - 1,
-          day: parseInt(document.issuedDate.split('-')[2]) - 1,
-        });
-        setInputGroup({
-          documentName: document.documentName,
-          issuer: document.issuer || '',
-          memo: document.memo || '',
-        });
-      }
-    };
-    fetchData();
-  }, []);
 
   return (
     <div>
@@ -145,7 +162,7 @@ const DocumentInputContent = ({
               <Dropdown
                 itemList={documentItemList}
                 selectedIndex={selectedIndexGroup.document}
-                setSelectedIndex={setDocumentSelectedIndex}
+                setSelectedIndex={handleSelectedIndexChange('document')}
                 placeholder="서류를 선택해주세요"
               />
               {selectedIndexGroup.document === 0 && (
@@ -163,21 +180,21 @@ const DocumentInputContent = ({
               <Dropdown
                 itemList={yearList}
                 selectedIndex={selectedIndexGroup.year}
-                setSelectedIndex={setYearSelectedIndex}
+                setSelectedIndex={handleSelectedIndexChange('year')}
                 className="col-span-3"
                 placeholder="년도"
               />
               <Dropdown
                 itemList={monthList}
                 selectedIndex={selectedIndexGroup.month}
-                setSelectedIndex={setMonthSelectedIndex}
+                setSelectedIndex={handleSelectedIndexChange('month')}
                 className="col-span-2"
                 placeholder="월"
               />
               <Dropdown
                 itemList={dayList}
                 selectedIndex={selectedIndexGroup.day}
-                setSelectedIndex={setDaySelectedIndex}
+                setSelectedIndex={handleSelectedIndexChange('day')}
                 className="col-span-2"
                 placeholder="일"
               />

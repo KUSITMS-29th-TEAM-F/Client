@@ -1,22 +1,20 @@
-'use client';
-
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useNavigate } from 'react-router-dom';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import DotsMenuButton, {
-  DotsMenuButtonProps,
-} from '@/components/ui/DotsMenuButton';
-import PencilCogIcon from '@/components/ui/icon/PencilCogIcon';
-import TrashXIcon from '@/components/ui/icon/TrashXIcon';
-import PopUp from '@/components/ui/PopUp';
-import { deleteDocument } from '@/api/document';
+import DotsMenuButton, { DotsMenuButtonProps } from '../../ui/DotsMenuButton';
+import PencilCogIcon from '../../ui/icon/PencilCogIcon';
+import TrashXIcon from '../../ui/icon/TrashXIcon';
+import PopUp from '../../ui/PopUp';
+import axios from '../../../api/axios';
 
 interface DotsMenuWrapperProps {
   documentId: number;
 }
 
 const DotsMenuWrapper = ({ documentId }: DotsMenuWrapperProps) => {
-  const router = useRouter();
+  const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDeletePopUpOpen, setIsDeletePopUpOpen] = useState(false);
@@ -36,8 +34,19 @@ const DotsMenuWrapper = ({ documentId }: DotsMenuWrapperProps) => {
     },
   ];
 
+  const deleteDocument = useMutation({
+    mutationFn: async () => {
+      const res = await axios.delete(`/members/documents/${documentId}`);
+      return res.data;
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['members'] });
+      setIsDeletePopUpOpen(false);
+    },
+  });
+
   const handleEditMenuItemClick = () => {
-    router.push(`/me/documents/${documentId}/edit`);
+    navigate(`/me/documents/${documentId}/edit`);
   };
 
   const handleDeleteMenuItemClick = () => {
@@ -50,9 +59,7 @@ const DotsMenuWrapper = ({ documentId }: DotsMenuWrapperProps) => {
   };
 
   const handleDeletePopUpConfirm = async () => {
-    await deleteDocument(documentId);
-    setIsDeletePopUpOpen(false);
-    router.refresh();
+    deleteDocument.mutate();
   };
 
   return (

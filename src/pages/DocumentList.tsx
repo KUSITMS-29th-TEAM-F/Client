@@ -1,21 +1,32 @@
-import FloatingActionButton from '@/components/ui/FloatingActionButton';
-import DotsMenuWrapper from '@/components/mypage/document/DotsMenuWrapper';
-import BackButtonHeader from '@/components/ui/BackButtonHeader';
-import CheckupListIcon from '@/components/ui/icon/CheckupListIcon';
-import FileDescriptionIcon from '@/components/ui/icon/FileDescriptionIcon';
-import FilePlusIcon from '@/components/ui/icon/FilePlusIcon';
-import DocumentItem from '@/components/mypage/document/DocumentItem';
-import { fetchDocuments } from '@/api/document';
+import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 
-const DocumentsPage = async () => {
-  const res = await fetchDocuments();
-  const documentList: {
-    documentId: number;
-    documentName: string;
-    issuedDate: string;
-    issuer: string | null;
-    memo: string | null;
-  }[] = res.data.documentResponseList;
+import axios from '../api/axios';
+import BackButtonHeader from '../components/ui/BackButtonHeader';
+import CheckupListIcon from '../components/ui/icon/CheckupListIcon';
+import DocumentItem from '../components/mypage/document/DocumentItem';
+import FloatingActionButton from '../components/ui/FloatingActionButton';
+import FilePlusIcon from '../components/ui/icon/FilePlusIcon';
+
+const DocumentList = () => {
+  const [documentList, setDocumentList] = useState<
+    {
+      documentId: number;
+      documentName: string;
+      issuedDate: string;
+      issuer: string | null;
+      memo: string | null;
+    }[]
+  >([]);
+
+  useQuery({
+    queryKey: ['members', 'documents'],
+    queryFn: async () => {
+      const res = await axios.get('/members/documents');
+      setDocumentList(res.data.data.documentResponseList);
+      return res.data;
+    },
+  });
 
   return (
     <div className="pb-28">
@@ -55,4 +66,4 @@ const DocumentsPage = async () => {
   );
 };
 
-export default DocumentsPage;
+export default DocumentList;

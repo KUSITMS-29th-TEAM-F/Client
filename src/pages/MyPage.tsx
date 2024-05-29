@@ -1,19 +1,32 @@
-import Image from 'next/image';
+import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { Link } from 'react-router-dom';
 
-import GrayBackground from '@/components/ui/global-style/GrayBackground';
-import LinkIcon from '@/components/ui/icon/LinkIcon';
-import PencilCogIcon from '@/components/ui/icon/PencilCogIcon';
-import UserCheckIcon from '@/components/ui/icon/UserCheckIcon';
-import CheckupListIcon from '@/components/ui/icon/CheckupListIcon';
-import Message2CogIcon from '@/components/ui/icon/Message2CogIcon';
-import Link from 'next/link';
-import { fetchMyInfo } from '@/api/mypage';
+import axios from '../api/axios';
+import UserCheckIcon from '../components/ui/icon/UserCheckIcon';
+import CheckupListIcon from '../components/ui/icon/CheckupListIcon';
+import Message2CogIcon from '../components/ui/icon/Message2CogIcon';
+import GrayBackground from '../components/ui/global-style/GrayBackground';
+import LinkIcon from '../components/ui/icon/LinkIcon';
+import PencilCogIcon from '../components/ui/icon/PencilCogIcon';
 
-const MyPage = async () => {
-  const res = await fetchMyInfo();
-  const myInfo = res.data;
+const MyPage = () => {
+  const [myInfo, setMyInfo] = useState<{
+    nickname: string;
+    socialLoginName: string;
+  }>({
+    nickname: '',
+    socialLoginName: '',
+  });
 
-  console.log(myInfo);
+  useQuery({
+    queryKey: ['members', 'my-page'],
+    queryFn: async () => {
+      const res = await axios.get('/members/my-page');
+      setMyInfo(res.data.data);
+      return res.data;
+    },
+  });
 
   const menuList: {
     icon: React.ReactNode;
@@ -48,7 +61,7 @@ const MyPage = async () => {
         <header className="fixed z-10 w-full bg-gray-00 p-4">
           <div className="mx-auto flex max-w-screen-lg items-center gap-2">
             <div className="overflow-hidden rounded-full">
-              <Image
+              <img
                 src="/images/placeholders/placeholder-profile.png"
                 alt="임시 프로필 이미지"
                 width={88}
@@ -88,7 +101,7 @@ const MyPage = async () => {
           {menuList.map((menu, index) => (
             <li key={index}>
               <Link
-                href={menu.href}
+                to={menu.href}
                 className="flex items-center gap-4 rounded-2xl border border-gray-10 bg-gray-00 p-6"
               >
                 <div>

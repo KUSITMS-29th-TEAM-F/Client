@@ -1,13 +1,20 @@
-'use client';
+import { useEffect } from 'react';
 
 const NavBarHide = () => {
-  return (
-    <style jsx global>{`
-      .nav-bar {
-        display: none;
+  useEffect(() => {
+    const navBar = document.querySelector('.nav-bar') as HTMLElement;
+    if (navBar) {
+      navBar.style.display = 'none';
+    }
+
+    return () => {
+      if (navBar) {
+        navBar.style.display = 'block';
       }
-    `}</style>
-  );
+    };
+  }, []);
+
+  return null;
 };
 
 export default NavBarHide;

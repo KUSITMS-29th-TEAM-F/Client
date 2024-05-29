@@ -1,10 +1,15 @@
-import DotsMenuButton from '@/components/ui/DotsMenuButton';
-import QuestionBox from '@/components/cover-letter/QuestionInput';
-import BackButtonHeader from '@/components/ui/BackButtonHeader';
-import DotsMenuWrapper from '@/components/cover-letter/DotsMenuWrapper';
-import GrayBackground from '@/components/ui/global-style/GrayBackground';
+import { useParams } from 'react-router-dom';
 
-const CoverLetterPage = ({ params }: { params: { id: number } }) => {
+import GrayBackground from '../components/ui/global-style/GrayBackground';
+import BackButtonHeader from '../components/ui/BackButtonHeader';
+import DotsMenuWrapper from '../components/cover-letter/DotsMenuWrapper';
+import QuestionBox from '../components/cover-letter/QuestionInput';
+
+const CoverLetterDetail = () => {
+  const params = useParams<{ id: string }>();
+
+  const coverLetterId = Number(params.id);
+
   const questionList: { content: string; answer: string }[] = [
     {
       content:
@@ -37,7 +42,7 @@ const CoverLetterPage = ({ params }: { params: { id: number } }) => {
               <div className="text-md-200 text-gray-40">
                 월곡주얼리장학생 | 월곡주얼리산업진흥재단
               </div>
-              <DotsMenuWrapper coverLetterId={params.id} />
+              <DotsMenuWrapper coverLetterId={coverLetterId} />
             </div>
           </div>
         </div>
@@ -58,4 +63,4 @@ const CoverLetterPage = ({ params }: { params: { id: number } }) => {
   );
 };
 
-export default CoverLetterPage;
+export default CoverLetterDetail;

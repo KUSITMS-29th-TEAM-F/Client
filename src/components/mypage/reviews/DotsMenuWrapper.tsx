@@ -1,21 +1,17 @@
-'use client';
-
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useNavigate } from 'react-router-dom';
 
-import DotsMenuButton, {
-  DotsMenuButtonProps,
-} from '@/components/ui/DotsMenuButton';
-import PencilCogIcon from '@/components/ui/icon/PencilCogIcon';
-import TrashXIcon from '@/components/ui/icon/TrashXIcon';
-import PopUp from '@/components/ui/PopUp';
+import DotsMenuButton, { DotsMenuButtonProps } from '../../ui/DotsMenuButton';
+import PencilCogIcon from '../../ui/icon/PencilCogIcon';
+import TrashXIcon from '../../ui/icon/TrashXIcon';
+import PopUp from '../../ui/PopUp';
 
 interface DotsMenuWrapperProps {
   reviewId: number;
 }
 
 const DotsMenuWrapper = ({ reviewId }: DotsMenuWrapperProps) => {
-  const router = useRouter();
+  const navigate = useNavigate();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDeletePopUpOpen, setIsDeletePopUpOpen] = useState(false);
@@ -36,7 +32,7 @@ const DotsMenuWrapper = ({ reviewId }: DotsMenuWrapperProps) => {
   ];
 
   const handleEditMenuItemClick = () => {
-    router.push(`/me/reviews/${reviewId}/edit`);
+    navigate(`/me/reviews/${reviewId}/edit`);
   };
 
   const handleDeleteMenuItemClick = () => {

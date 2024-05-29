@@ -1,10 +1,10 @@
-import DotsMenuWrapper from '@/components/mypage/reviews/DotsMenuWrapper';
-import BackButtonHeader from '@/components/ui/BackButtonHeader';
-import Stars from '@/components/ui/Stars';
-import Status from '@/components/ui/Status';
-import Message2CogIcon from '@/components/ui/icon/Message2CogIcon';
+import DotsMenuWrapper from '../components/mypage/reviews/DotsMenuWrapper';
+import BackButtonHeader from '../components/ui/BackButtonHeader';
+import Stars from '../components/ui/Stars';
+import Status from '../components/ui/Status';
+import Message2CogIcon from '../components/ui/icon/Message2CogIcon';
 
-const ReviewsPage = () => {
+const ReviewList = () => {
   const reviewList: {
     id: number;
     name: string;
@@ -113,4 +113,4 @@ const ReviewsPage = () => {
   );
 };
 
-export default ReviewsPage;
+export default ReviewList;

@@ -1,13 +1,11 @@
-import Link from 'next/link';
+import { Link } from 'react-router-dom';
 
-import FloatingActionButton from '@/components/ui/FloatingActionButton';
-import DotsMenuWrapper from '@/components/cover-letter/DotsMenuWrapper';
-import FileDescriptionIcon from '@/components/ui/icon/FileDescriptionIcon';
-import FilePencilIcon from '@/components/ui/icon/FilePencilIcon';
-import PencilIcon from '@/components/ui/icon/PencilIcon';
-import Image from 'next/image';
+import FileDescriptionIcon from '../components/ui/icon/FileDescriptionIcon';
+import DotsMenuWrapper from '../components/cover-letter/DotsMenuWrapper';
+import FloatingActionButton from '../components/ui/FloatingActionButton';
+import PencilIcon from '../components/ui/icon/PencilIcon';
 
-const CoverLettersPage = () => {
+const CoverLetterList = () => {
   const coverLetterList: {
     id: number;
     title: string;
@@ -57,7 +55,7 @@ const CoverLettersPage = () => {
       <div className="mx-auto max-w-screen-lg">
         <header className="flex items-center gap-3 py-3 text-gray-80">
           <div>
-            <Image
+            <img
               src="/icons/menu/cover-letters-icon.svg"
               alt="자기소개서"
               width={18}
@@ -71,7 +69,7 @@ const CoverLettersPage = () => {
             {coverLetterList.map((coverLetter) => (
               <li key={coverLetter.id}>
                 <Link
-                  href={`/cover-letters/${coverLetter.id}`}
+                  to={`/cover-letters/${coverLetter.id}`}
                   className="flex flex-col gap-2 border-t border-gray-05 px-2 py-5 last:border-b"
                 >
                   <div className="flex items-center gap-1">
@@ -104,4 +102,4 @@ const CoverLettersPage = () => {
   );
 };
 
-export default CoverLettersPage;
+export default CoverLetterList;
