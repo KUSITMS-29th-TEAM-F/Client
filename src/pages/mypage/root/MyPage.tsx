@@ -2,13 +2,13 @@ import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 
-import axios from '../api/axios';
-import UserCheckIcon from '../components/ui/icon/UserCheckIcon';
-import CheckupListIcon from '../components/ui/icon/CheckupListIcon';
-import Message2CogIcon from '../components/ui/icon/Message2CogIcon';
-import GrayBackground from '../components/ui/global-style/GrayBackground';
-import LinkIcon from '../components/ui/icon/LinkIcon';
-import PencilCogIcon from '../components/ui/icon/PencilCogIcon';
+import axios from '../../../api/axios';
+import UserCheckIcon from '../../../components/ui/icon/UserCheckIcon';
+import CheckupListIcon from '../../../components/ui/icon/CheckupListIcon';
+import Message2CogIcon from '../../../components/ui/icon/Message2CogIcon';
+import GrayBackground from '../../../components/ui/global-style/GrayBackground';
+import LinkIcon from '../../../components/ui/icon/LinkIcon';
+import PencilCogIcon from '../../../components/ui/icon/PencilCogIcon';
 
 const MyPage = () => {
   const [myInfo, setMyInfo] = useState<{

@@ -1,47 +1,40 @@
-import { useEffect, useState } from 'react';
-
-import { ScholarshipListContentProps } from '../components/ui/ScholarshipListContent';
-import axios from '../api/axios';
 import clsx from 'clsx';
-import Capsule from '../components/ui/Capsule';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import GrayBackground from '../components/ui/global-style/GrayBackground';
 
-const AllScholarships = () => {
+import { ScholarshipListContentProps } from '../../components/ui/ScholarshipListContent';
+import axios from '../../api/axios';
+import Capsule from '../../components/ui/Capsule';
+import GrayBackground from '../../components/ui/global-style/GrayBackground';
+
+const RecommendScholarships = () => {
   const [scholarshipList, setScholarshipList] = useState<
     ScholarshipListContentProps['scholarshipList']
   >([]);
 
-  const title = '전체 장학금';
-  const icon = '/icons/menu/all-scholarships-icon.svg';
-  const filterList = ['모집중', '모집예정', '모집마감'];
+  const title = '맞춤 장학금';
+  const icon = '/icons/menu/recommend-scholarships-icon.svg';
+  const filterList = ['전체', '바로 지원 가능'];
 
-  const [filterActiveIndexList, setFilterActiveIndexList] = useState<boolean[]>(
-    [true, false, false],
-  );
+  const [filterActiveIndex, setFilterActiveIndex] = useState<number>(0);
 
   const handleFilterClick = (index: number) => {
-    const updatedFilterActiveIndexList = [...filterActiveIndexList];
-    updatedFilterActiveIndexList[index] = !updatedFilterActiveIndexList[index];
-    setFilterActiveIndexList(updatedFilterActiveIndexList);
+    setFilterActiveIndex(index);
   };
 
   useEffect(() => {
     const fetchData = async () => {
-      const filterStatusRaw = ['ING', 'UPCOMING', 'FINISHED'];
-      const filterStatus = filterStatusRaw.filter(
-        (_, index) => filterActiveIndexList[index],
-      );
-      const res = await axios.get(`/announcements`, {
-        params: { status: filterStatus },
+      const filterStatus = ['전체', '바로지원가능'];
+      const res = await axios.get(`/announcements/recommendations`, {
+        params: { status: filterStatus[filterActiveIndex] },
       });
       setScholarshipList(res.data.data.announcementResponseList);
     };
     fetchData();
-  }, [filterActiveIndexList]);
+  }, [filterActiveIndex]);
 
   return (
-    <div className="pb-16">
+    <div>
       <GrayBackground />
       <header>
         <div className="fixed h-[6.625rem] w-full bg-gray-00 px-4">
@@ -67,9 +60,9 @@ const AllScholarships = () => {
                       'text-md-200 cursor-pointer rounded-full px-3 py-1.5',
                       {
                         'border border-gray-80 bg-gray-80 text-gray-10':
-                          filterActiveIndexList[index],
+                          filterActiveIndex === index,
                         'border border-gray-15 bg-gray-00 text-gray-60':
-                          !filterActiveIndexList[index],
+                          filterActiveIndex !== index,
                       },
                     )}
                     onClick={() => handleFilterClick(index)}
@@ -146,4 +139,4 @@ const AllScholarships = () => {
   );
 };
 
-export default AllScholarships;
+export default RecommendScholarships;

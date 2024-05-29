@@ -12,19 +12,22 @@ import {
   supportIncomeBracketList,
   universityCityList,
   yearList,
-} from '../constants/optionList';
-import { PrivacyInputValue, PrivacySectionProps } from '../interfaces/privacy';
-import { initPrivacyValue } from '../constants/privacy';
-import axios from '../api/axios';
-import XIcon from '../components/ui/icon/XIcon';
-import ChevronLeftIcon from '../components/ui/icon/ChevronLeftIcon';
-import NicknameSection from '../components/onboarding/NicknameSection';
-import FirstPrivacySection from '../components/ui/privacy/FirstPrivacySection';
-import SecondPrivacySection from '../components/ui/privacy/SecondPrivacySection';
-import ThirdPrivacySection from '../components/ui/privacy/ThirdPrivacySection';
-import CompleteSection from '../components/onboarding/CompleteSection';
-import Button from '../components/ui/Button';
-import NavBarHide from '../components/ui/global-style/NavBarHide';
+} from '../../constants/optionList';
+import {
+  PrivacyInputValue,
+  PrivacySectionProps,
+} from '../../interfaces/privacy';
+import { initPrivacyValue } from '../../constants/privacy';
+import axios from '../../api/axios';
+import XIcon from '../../components/ui/icon/XIcon';
+import ChevronLeftIcon from '../../components/ui/icon/ChevronLeftIcon';
+import NicknameSection from '../../components/onboarding/NicknameSection';
+import FirstPrivacySection from '../../components/ui/privacy/FirstPrivacySection';
+import SecondPrivacySection from '../../components/ui/privacy/SecondPrivacySection';
+import ThirdPrivacySection from '../../components/ui/privacy/ThirdPrivacySection';
+import CompleteSection from '../../components/onboarding/CompleteSection';
+import Button from '../../components/ui/Button';
+import NavBarHide from '../../components/ui/global-style/NavBarHide';
 
 const Onboarding = () => {
   const navigate = useNavigate();

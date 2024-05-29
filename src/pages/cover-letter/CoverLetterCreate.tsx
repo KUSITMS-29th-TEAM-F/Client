@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import QuestionBox from '../components/cover-letter/QuestionInput';
-import BackButtonHeader from '../components/ui/BackButtonHeader';
-import Dropdown from '../components/ui/Dropdown';
-import PopUp from '../components/ui/PopUp';
-import GrayBackground from '../components/ui/global-style/GrayBackground';
+import QuestionBox from '../../components/cover-letter/QuestionInput';
+import BackButtonHeader from '../../components/ui/BackButtonHeader';
+import Dropdown from '../../components/ui/Dropdown';
+import PopUp from '../../components/ui/PopUp';
+import GrayBackground from '../../components/ui/global-style/GrayBackground';
 
 const CoverLetterCreate = () => {
   const navigate = useNavigate();

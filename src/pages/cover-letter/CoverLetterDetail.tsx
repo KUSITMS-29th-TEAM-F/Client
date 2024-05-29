@@ -1,9 +1,9 @@
 import { useParams } from 'react-router-dom';
 
-import GrayBackground from '../components/ui/global-style/GrayBackground';
-import BackButtonHeader from '../components/ui/BackButtonHeader';
-import DotsMenuWrapper from '../components/cover-letter/DotsMenuWrapper';
-import QuestionBox from '../components/cover-letter/QuestionInput';
+import GrayBackground from '../../components/ui/global-style/GrayBackground';
+import BackButtonHeader from '../../components/ui/BackButtonHeader';
+import DotsMenuWrapper from '../../components/cover-letter/DotsMenuWrapper';
+import QuestionBox from '../../components/cover-letter/QuestionInput';
 
 const CoverLetterDetail = () => {
   const params = useParams<{ id: string }>();

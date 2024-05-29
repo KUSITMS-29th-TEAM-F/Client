@@ -2,9 +2,9 @@ import { useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 
-import axios from '../api/axios';
+import axios from '../../api/axios';
 import clsx from 'clsx';
-import Status, { StatusProps } from '../components/ui/Status';
+import Status, { StatusProps } from '../../components/ui/Status';
 
 const MyScholarshipsList = () => {
   const [searchParams] = useSearchParams();

@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import GrayBackground from '../components/ui/global-style/GrayBackground';
-import BackButtonHeader from '../components/ui/BackButtonHeader';
-import Stars from '../components/ui/Stars';
-import Button from '../components/ui/Button';
-import PopUp from '../components/ui/PopUp';
+import GrayBackground from '../../../components/ui/global-style/GrayBackground';
+import BackButtonHeader from '../../../components/ui/BackButtonHeader';
+import Stars from '../../../components/ui/Stars';
+import Button from '../../../components/ui/Button';
+import PopUp from '../../../components/ui/PopUp';
 
 const ReviewEdit = () => {
   const navigate = useNavigate();

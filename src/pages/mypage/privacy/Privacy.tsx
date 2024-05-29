@@ -1,12 +1,15 @@
 import { Fragment, useState } from 'react';
 
-import { PrivacyInputValue, PrivacySectionProps } from '../interfaces/privacy';
-import { initPrivacyValue } from '../constants/privacy';
-import FirstPrivacySection from '../components/ui/privacy/FirstPrivacySection';
-import SecondPrivacySection from '../components/ui/privacy/SecondPrivacySection';
-import ThirdPrivacySection from '../components/ui/privacy/ThirdPrivacySection';
-import DialogHeader from '../components/ui/DialogHeader';
-import Divider from '../components/ui/Divider';
+import {
+  PrivacyInputValue,
+  PrivacySectionProps,
+} from '../../../interfaces/privacy';
+import { initPrivacyValue } from '../../../constants/privacy';
+import FirstPrivacySection from '../../../components/ui/privacy/FirstPrivacySection';
+import SecondPrivacySection from '../../../components/ui/privacy/SecondPrivacySection';
+import ThirdPrivacySection from '../../../components/ui/privacy/ThirdPrivacySection';
+import DialogHeader from '../../../components/ui/DialogHeader';
+import Divider from '../../../components/ui/Divider';
 
 const Privacy = () => {
   const [value, setValue] = useState<PrivacyInputValue>(initPrivacyValue);

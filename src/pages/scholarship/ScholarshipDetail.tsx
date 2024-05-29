@@ -2,13 +2,13 @@ import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
-import BackButtonHeader from '../components/ui/BackButtonHeader';
-import Capsule from '../components/ui/Capsule';
-import Button from '../components/ui/Button';
-import MessageDotsIcon from '../components/ui/icon/MessageDotsIcon';
-import ScholarshipTabSection from '../components/scholarship/detail/section/ScholarshipTabSection';
-import ScholarshipBottomAction from '../components/scholarship/detail/section/ScholarshipBottomAction';
-import axios from '../api/axios';
+import BackButtonHeader from '../../components/ui/BackButtonHeader';
+import Capsule from '../../components/ui/Capsule';
+import Button from '../../components/ui/Button';
+import MessageDotsIcon from '../../components/ui/icon/MessageDotsIcon';
+import ScholarshipTabSection from '../../components/scholarship/detail/section/ScholarshipTabSection';
+import ScholarshipBottomAction from '../../components/scholarship/detail/section/ScholarshipBottomAction';
+import axios from '../../api/axios';
 
 const ScholarshipDetail = () => {
   const params = useParams<{ id: string }>();

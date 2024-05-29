@@ -2,19 +2,19 @@ import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 
-import HeaderHide from '../components/my-scholarships/HeaderHide';
-import BackButtonHeader from '../components/ui/BackButtonHeader';
-import StatusCheck from '../components/my-scholarships/StatusCheck';
-import BookmarkFilledIcon from '../components/ui/icon/BookmarkFilledIcon';
-import ChevronRightIcon from '../components/ui/icon/ChevronRightIcon';
-import Button from '../components/ui/Button';
-import MessageDotsIcon from '../components/ui/icon/MessageDotsIcon';
-import Divider from '../components/ui/Divider';
-import PencilIcon from '../components/ui/icon/PencilIcon';
-import FileDescriptionIcon from '../components/ui/icon/FileDescriptionIcon';
-import DotsMenuWrapper from '../components/cover-letter/DotsMenuWrapper';
-import axios from '../api/axios';
-import WhiteBackground from '../components/ui/global-style/WhiteBackground';
+import HeaderHide from '../../components/my-scholarships/HeaderHide';
+import BackButtonHeader from '../../components/ui/BackButtonHeader';
+import StatusCheck from '../../components/my-scholarships/StatusCheck';
+import BookmarkFilledIcon from '../../components/ui/icon/BookmarkFilledIcon';
+import ChevronRightIcon from '../../components/ui/icon/ChevronRightIcon';
+import Button from '../../components/ui/Button';
+import MessageDotsIcon from '../../components/ui/icon/MessageDotsIcon';
+import Divider from '../../components/ui/Divider';
+import PencilIcon from '../../components/ui/icon/PencilIcon';
+import FileDescriptionIcon from '../../components/ui/icon/FileDescriptionIcon';
+import DotsMenuWrapper from '../../components/cover-letter/DotsMenuWrapper';
+import axios from '../../api/axios';
+import WhiteBackground from '../../components/ui/global-style/WhiteBackground';
 
 const MyScholarshipDetail = () => {
   const params = useParams<{ id: string }>();

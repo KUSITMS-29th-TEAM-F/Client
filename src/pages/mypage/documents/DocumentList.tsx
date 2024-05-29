@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 
-import axios from '../api/axios';
-import BackButtonHeader from '../components/ui/BackButtonHeader';
-import CheckupListIcon from '../components/ui/icon/CheckupListIcon';
-import DocumentItem from '../components/mypage/document/DocumentItem';
-import FloatingActionButton from '../components/ui/FloatingActionButton';
-import FilePlusIcon from '../components/ui/icon/FilePlusIcon';
+import axios from '../../../api/axios';
+import BackButtonHeader from '../../../components/ui/BackButtonHeader';
+import CheckupListIcon from '../../../components/ui/icon/CheckupListIcon';
+import DocumentItem from '../../../components/mypage/document/DocumentItem';
+import FloatingActionButton from '../../../components/ui/FloatingActionButton';
+import FilePlusIcon from '../../../components/ui/icon/FilePlusIcon';
 
 const DocumentList = () => {
   const [documentList, setDocumentList] = useState<

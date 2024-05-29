@@ -1,4 +1,4 @@
-import BackButtonHeader from '../components/ui/BackButtonHeader';
+import BackButtonHeader from '../../components/ui/BackButtonHeader';
 
 const ArticleDetail = () => {
   const content =

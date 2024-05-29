@@ -1,30 +1,30 @@
 import { createBrowserRouter } from 'react-router-dom';
 
-import Home from './pages/Home';
-import Onboarding from './pages/Onboarding';
-import Layout from './pages/Layout';
-import AllScholarships from './pages/AllScholarships';
-import RecommendScholarships from './pages/RecommendScholarships';
-import ScholarshipDetail from './pages/ScholarshipDetail';
-import MyScholarshipsLayout from './pages/MyScholarshipsLayout';
-import MyScholarshipsDate from './pages/MyScholarshipsDate';
-import AuthKakaoCallback from './pages/AuthKakaoCallback';
-import MyScholarshipsList from './pages/MyScholarshipList';
-import MyScholarshipsFavorite from './pages/MyScholarshipsFavorite';
-import MyScholarshipDetail from './pages/MyScholarshipDetail';
-import ArticleList from './pages/ArticleList';
-import ArticleDetail from './pages/ArticleDetail';
-import CoverLetterList from './pages/CoverLetterList';
-import CoverLetterCreate from './pages/CoverLetterCreate';
-import CoverLetterDetail from './pages/CoverLetterDetail';
-import CoverLetterEdit from './pages/CoverLetterEdit';
-import MyPage from './pages/MyPage';
-import ReviewList from './pages/ReviewList';
-import ReviewEdit from './pages/ReviewEdit';
-import DocumentList from './pages/DocumentList';
-import DocumentNew from './pages/DocumentNew';
-import DocumentEdit from './pages/DocumentEdit';
-import Privacy from './pages/Privacy';
+import Home from './pages/home/Home';
+import Onboarding from './pages/onboarding/Onboarding';
+import Layout from './components/ui/layout/Layout';
+import AllScholarships from './pages/scholarship/AllScholarships';
+import RecommendScholarships from './pages/scholarship/RecommendScholarships';
+import ScholarshipDetail from './pages/scholarship/ScholarshipDetail';
+import MyScholarshipsLayout from './components/ui/layout/MyScholarshipsLayout';
+import MyScholarshipsDate from './pages/my-scholarship/MyScholarshipsDate';
+import AuthKakaoCallback from './pages/auth/AuthKakaoCallback';
+import MyScholarshipsList from './pages/my-scholarship/MyScholarshipList';
+import MyScholarshipsFavorite from './pages/my-scholarship/MyScholarshipsFavorite';
+import MyScholarshipDetail from './pages/my-scholarship/MyScholarshipDetail';
+import ArticleList from './pages/article/ArticleList';
+import ArticleDetail from './pages/article/ArticleDetail';
+import CoverLetterList from './pages/cover-letter/CoverLetterList';
+import CoverLetterCreate from './pages/cover-letter/CoverLetterCreate';
+import CoverLetterDetail from './pages/cover-letter/CoverLetterDetail';
+import CoverLetterEdit from './pages/cover-letter/CoverLetterEdit';
+import MyPage from './pages/mypage/root/MyPage';
+import ReviewList from './pages/mypage/reviews/ReviewList';
+import ReviewEdit from './pages/mypage/reviews/ReviewEdit';
+import DocumentList from './pages/mypage/documents/DocumentList';
+import DocumentNew from './pages/mypage/documents/DocumentNew';
+import DocumentEdit from './pages/mypage/documents/DocumentEdit';
+import Privacy from './pages/mypage/privacy/Privacy';
 
 export const router = createBrowserRouter([
   {

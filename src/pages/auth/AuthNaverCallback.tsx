@@ -3,7 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 
 import _axios from 'axios';
 
-import axios from '../api/axios';
+import axios from '../../api/axios';
 
 const AuthNaverCallback = () => {
   const [searchParams] = useSearchParams();

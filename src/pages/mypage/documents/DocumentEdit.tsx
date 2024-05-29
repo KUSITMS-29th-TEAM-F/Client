@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
 
-import DocumentInputContent from '../components/mypage/document/DocumentInputContent';
+import DocumentInputContent from '../../../components/mypage/document/DocumentInputContent';
 
 const DocumentEdit = () => {
   const params = useParams<{ id: string }>();

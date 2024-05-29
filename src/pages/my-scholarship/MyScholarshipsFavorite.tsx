@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
-import Capsule from '../components/ui/Capsule';
-import HeartFilledIcon from '../components/ui/icon/HeartFilledIcon';
+import Capsule from '../../components/ui/Capsule';
+import HeartFilledIcon from '../../components/ui/icon/HeartFilledIcon';
 import { useQuery } from '@tanstack/react-query';
-import axios from '../api/axios';
+import axios from '../../api/axios';
 import { useState } from 'react';
 
 const MyScholarshipsFavorite = () => {

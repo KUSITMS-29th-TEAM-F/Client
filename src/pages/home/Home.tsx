@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 
-import ArticleItem from '../components/home/ArticleItem';
-import Axios from '../api/axios';
+import ArticleItem from '../../components/home/ArticleItem';
+import Axios from '../../api/axios';
 
 const Home = () => {
   const [popularScholarshipList, setPopularScholarshipList] = useState<

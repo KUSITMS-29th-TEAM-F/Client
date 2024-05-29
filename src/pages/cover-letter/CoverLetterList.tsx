@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom';
 
-import FileDescriptionIcon from '../components/ui/icon/FileDescriptionIcon';
-import DotsMenuWrapper from '../components/cover-letter/DotsMenuWrapper';
-import FloatingActionButton from '../components/ui/FloatingActionButton';
-import PencilIcon from '../components/ui/icon/PencilIcon';
+import FileDescriptionIcon from '../../components/ui/icon/FileDescriptionIcon';
+import DotsMenuWrapper from '../../components/cover-letter/DotsMenuWrapper';
+import FloatingActionButton from '../../components/ui/FloatingActionButton';
+import PencilIcon from '../../components/ui/icon/PencilIcon';
 
 const CoverLetterList = () => {
   const coverLetterList: {
