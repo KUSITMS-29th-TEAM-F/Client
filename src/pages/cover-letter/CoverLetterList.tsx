@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import FileDescriptionIcon from '../../components/ui/icon/FileDescriptionIcon';
-import DotsMenuWrapper from '../../components/cover-letter/DotsMenuWrapper';
+import DotsMenuWrapper from '../../components/cover-letter/dots-menu/DotsMenuWrapper';
 import FloatingActionButton from '../../components/ui/FloatingActionButton';
 import PencilIcon from '../../components/ui/icon/PencilIcon';
 import { useQuery } from '@tanstack/react-query';

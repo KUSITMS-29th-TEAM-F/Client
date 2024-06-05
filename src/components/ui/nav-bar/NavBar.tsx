@@ -70,7 +70,7 @@ const NavBar = () => {
   return (
     <>
       <div className="nav-bar">
-        <nav className="fixed left-0 top-0 z-50 flex w-full justify-center bg-gray-00 px-4 py-3">
+        <nav className="fixed left-0 top-0 z-40 flex w-full justify-center bg-gray-00 px-4 py-3">
           <div className="flex w-full max-w-screen-lg flex-col gap-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-8">

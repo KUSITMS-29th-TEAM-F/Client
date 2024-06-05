@@ -4,6 +4,10 @@ const ReviewList = () => {
   return (
     <ul>
       <ReviewItem />
+      <ReviewItem />
+      <ReviewItem />
+      <ReviewItem />
+      <ReviewItem />
     </ul>
   );
 };

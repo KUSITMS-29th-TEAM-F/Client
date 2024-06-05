@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import PencilCogIcon from '../ui/icon/PencilCogIcon';
-import TrashXIcon from '../ui/icon/TrashXIcon';
-import DotsMenuButton, { DotsMenuButtonProps } from '../ui/DotsMenuButton';
-import PopUp from '../ui/PopUp';
+import PencilCogIcon from '../../ui/icon/PencilCogIcon';
+import TrashXIcon from '../../ui/icon/TrashXIcon';
+import DotsMenuButton, { DotsMenuButtonProps } from '../../ui/DotsMenuButton';
+import PopUp from '../../ui/PopUp';
+import axios from '../../../api/axios';
 
 interface DotsMenuWrapperProps {
   coverLetterId: number;
@@ -12,9 +14,21 @@ interface DotsMenuWrapperProps {
 
 const DotsMenuWrapper = ({ coverLetterId }: DotsMenuWrapperProps) => {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const [isDeletePopUpOpen, setIsDeletePopUpOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const deleteCoverLetter = useMutation({
+    mutationFn: async () => {
+      const res = await axios.delete(`/members/cover-letters/${coverLetterId}`);
+      return res.data;
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['members'] });
+      navigate('/cover-letters');
+    },
+  });
 
   const menuList: DotsMenuButtonProps['menuList'] = [
     {
@@ -46,6 +60,7 @@ const DotsMenuWrapper = ({ coverLetterId }: DotsMenuWrapperProps) => {
 
   const handleDeleteButtonClick = () => {
     setIsDeletePopUpOpen(false);
+    deleteCoverLetter.mutate();
   };
 
   return (

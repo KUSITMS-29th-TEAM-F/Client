@@ -1,0 +1,10 @@
+<svg width="36" height="37" viewBox="0 0 36 37" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="calendar_view_day" clip-path="url(#clip0_1008_8168)">
+<path id="Vector" d="M6 26H30C30.825 26 31.5 26.675 31.5 27.5C31.5 28.325 30.825 29 30 29H6C5.175 29 4.5 28.325 4.5 27.5C4.5 26.675 5.175 26 6 26ZM6 15.5H30C30.825 15.5 31.5 16.175 31.5 17V21.5C31.5 22.325 30.825 23 30 23H6C5.175 23 4.5 22.325 4.5 21.5V17C4.5 16.175 5.175 15.5 6 15.5ZM6 9.5H30C30.825 9.5 31.5 10.175 31.5 11C31.5 11.825 30.825 12.5 30 12.5H6C5.175 12.5 4.5 11.825 4.5 11C4.5 10.175 5.175 9.5 6 9.5Z" fill="#CACACE"/>
+</g>
+<defs>
+<clipPath id="clip0_1008_8168">
+<rect width="36" height="36" fill="#CACACE" transform="translate(0 0.5)"/>
+</clipPath>
+</defs>
+</svg>

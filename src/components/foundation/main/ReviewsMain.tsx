@@ -1,7 +1,7 @@
 import ReviewList from '../review/ReviewList';
 import ReviewTop from '../review/ReviewTop';
 
-const ReviewsSection = () => {
+const ReviewsMain = () => {
   return (
     <main>
       <ReviewTop />
@@ -10,4 +10,4 @@ const ReviewsSection = () => {
   );
 };
 
-export default ReviewsSection;
+export default ReviewsMain;

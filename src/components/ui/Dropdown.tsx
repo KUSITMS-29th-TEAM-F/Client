@@ -12,6 +12,7 @@ interface DropdownProps {
   itemList: string[];
   placeholder: string;
   className?: string;
+  value?: string;
 }
 
 const Dropdown = ({
@@ -20,12 +21,14 @@ const Dropdown = ({
   itemList,
   placeholder,
   className,
+  value,
 }: DropdownProps) => {
   const menuRef = useRef<HTMLDivElement>(null);
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleDropdownClick = () => {
+    if (value) return;
     setIsMenuOpen(!isMenuOpen);
   };
 
@@ -60,12 +63,16 @@ const Dropdown = ({
           className={clsx(
             'text-md-200 overflow-hidden overflow-ellipsis whitespace-nowrap',
             {
-              'text-gray-80': selectedIndex !== null,
+              'text-gray-80': selectedIndex !== null || value,
               'text-gray-30': selectedIndex === null,
             },
           )}
         >
-          {selectedIndex !== null ? itemList[selectedIndex] : placeholder}
+          {value
+            ? value
+            : selectedIndex !== null
+              ? itemList[selectedIndex]
+              : placeholder}
         </span>
         <span className="text-[1.25rem] text-gray-40">
           <ChevronDownIcon />

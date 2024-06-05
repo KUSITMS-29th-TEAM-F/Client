@@ -47,14 +47,20 @@ const ScholarshipsSection = ({ selectedDate }: ScholarshipsSectionProps) => {
         <h2 className="text-lg-200 ml-2 text-gray-80">
           {formatSectionDateString(selectedDate)}
         </h2>
-        <ul className="mt-2 flex flex-col gap-4">
-          {scholarshipList.map((scholarship) => (
-            <ScholarshipItem
-              key={scholarship.applyId}
-              scholarship={scholarship}
-            />
-          ))}
-        </ul>
+        {scholarshipList.length === 0 ? (
+          <div className="text-lg-200 px-4 py-10 text-center text-gray-40">
+            저장한 공고가 없어요
+          </div>
+        ) : (
+          <ul className="mt-2 flex flex-col gap-4">
+            {scholarshipList.map((scholarship) => (
+              <ScholarshipItem
+                key={scholarship.applyId}
+                scholarship={scholarship}
+              />
+            ))}
+          </ul>
+        )}
       </div>
     </section>
   );

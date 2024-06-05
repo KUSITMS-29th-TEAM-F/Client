@@ -42,7 +42,12 @@ const DotsMenuButton = ({
   }, [isMenuOpen]);
 
   return (
-    <div onClick={(e) => e.stopPropagation()}>
+    <div
+      onClick={(e) => {
+        e.stopPropagation();
+        e.preventDefault();
+      }}
+    >
       <div ref={menuRef} className="relative">
         <span
           className="cursor-pointer text-[1.25rem] text-gray-20"

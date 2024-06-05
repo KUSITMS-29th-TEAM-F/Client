@@ -4,7 +4,7 @@ import ThumbUpIcon from '../../ui/icon/ThumbUpIcon';
 
 const ReviewItem = () => {
   return (
-    <li className="flex flex-col gap-4 py-6">
+    <li className="flex flex-col gap-4 border-b border-gray-05 py-6">
       <div className="flex items-center gap-0.5">
         {Array.from({ length: 4 }, (_, index) => index + 1).map((th) => (
           <span key={th} className="text-primary">

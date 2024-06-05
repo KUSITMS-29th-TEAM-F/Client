@@ -12,9 +12,10 @@ import MessageDotsIcon from '../../components/ui/icon/MessageDotsIcon';
 import Divider from '../../components/ui/Divider';
 import PencilIcon from '../../components/ui/icon/PencilIcon';
 import FileDescriptionIcon from '../../components/ui/icon/FileDescriptionIcon';
-import DotsMenuWrapper from '../../components/cover-letter/DotsMenuWrapper';
+import DotsMenuWrapper from '../../components/cover-letter/dots-menu/DotsMenuWrapper';
 import axios from '../../api/axios';
 import WhiteBackground from '../../components/ui/global-style/WhiteBackground';
+import dayjs from 'dayjs';
 
 const MyScholarshipDetail = () => {
   const params = useParams<{ id: string }>();
@@ -30,6 +31,7 @@ const MyScholarshipDetail = () => {
     myCoverLetterList: {
       coverLetterId: number;
       title: string;
+      localDateTime: string;
     }[];
   }>({
     applyId: 1,
@@ -48,38 +50,16 @@ const MyScholarshipDetail = () => {
     queryKey: ['apply-list', myScholarshipId],
     queryFn: async () => {
       const res = await axios.get(`/apply-list/${myScholarshipId}`);
+      console.log(res.data.data);
       setMyScholarship(res.data.data);
       return res.data;
     },
   });
 
-  const coverLetterList: {
-    coverLetterId: number;
-    title: string;
-    createdAt: string;
-  }[] = [
-    {
-      coverLetterId: 1,
-      title: '월곡주얼리 최종',
-      createdAt: '2024.05.17',
-    },
-    {
-      coverLetterId: 2,
-      title: '월곡주얼리 초안',
-      createdAt: '2024.05.03',
-    },
-    {
-      coverLetterId: 3,
-      title: '월곡주얼리 1차',
-      createdAt: '2024.04.20',
-    },
-    {
-      coverLetterId: 4,
-      title: '세아해암',
-      createdAt: '2024.03.28',
-    },
-    { coverLetterId: 5, title: '클래식 창의지원', createdAt: '2024.03.26' },
-  ];
+  const formatDateString = (dateString: string) => {
+    const date = dayjs(dateString);
+    return date.format('YYYY.MM.DD');
+  };
 
   return (
     <main className="px-0 pb-16 md:px-4">
@@ -152,55 +132,57 @@ const MyScholarshipDetail = () => {
             </div>
           </div>
         </div>
-        {coverLetterList.length !== 0 && (
-          <>
-            <div className="block md:hidden">
-              <Divider />
+        <div className="block md:hidden">
+          <Divider />
+        </div>
+        <div className="flex items-center justify-between p-4 lg:pt-8">
+          <h2 className="title-sm-300 text-gray-80">작성한 자기소개서</h2>
+          <Link
+            to="/cover-letters/new"
+            className="flex items-center gap-1 text-primary"
+          >
+            <span className="text-[1.125rem]">
+              <PencilIcon />
+            </span>
+            <span className="text-md-200">작성하기</span>
+          </Link>
+        </div>
+        <ul>
+          {myScholarship.myCoverLetterList.length === 0 ? (
+            <div className="text-lg-200 px-4 py-10 text-center text-gray-40">
+              작성한 자기소개서가 없어요
             </div>
-            <div className="flex items-center justify-between p-4">
-              <h2 className="title-sm-300 text-gray-80">작성한 자기소개서</h2>
-              <Link
-                to="/cover-letters/new"
-                className="flex items-center gap-1 text-primary"
+          ) : (
+            myScholarship.myCoverLetterList.map((coverLetter) => (
+              <li
+                key={coverLetter.coverLetterId}
+                className="border-b border-gray-05 last:border-b-0"
               >
-                <span className="text-[1.125rem]">
-                  <PencilIcon />
-                </span>
-                <span className="text-md-200">작성하기</span>
-              </Link>
-            </div>
-            <ul>
-              {coverLetterList.map((coverLetter) => (
-                <li
-                  key={coverLetter.coverLetterId}
-                  className="border-b border-gray-05 last:border-b-0"
+                <Link
+                  to={`/cover-letters/${coverLetter.coverLetterId}`}
+                  className="flex flex-col gap-2 px-6 py-5"
                 >
-                  <Link
-                    to={`/cover-letters/${coverLetter.coverLetterId}`}
-                    className="flex flex-col gap-2 px-6 py-5"
-                  >
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-1">
-                        <span className="text-[1.25rem] text-gray-30">
-                          <FileDescriptionIcon />
-                        </span>
-                        <h2 className="text-lg-200 text-gray-80">
-                          {coverLetter.title}
-                        </h2>
-                      </div>
-                      <DotsMenuWrapper
-                        coverLetterId={coverLetter.coverLetterId}
-                      />
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-1">
+                      <span className="text-[1.25rem] text-gray-30">
+                        <FileDescriptionIcon />
+                      </span>
+                      <h2 className="text-lg-200 text-gray-80">
+                        {coverLetter.title}
+                      </h2>
                     </div>
-                    <div className="text-md-200 flex items-center gap-2 text-gray-30">
-                      <span>{coverLetter.createdAt}</span>
-                    </div>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </>
-        )}
+                    <DotsMenuWrapper
+                      coverLetterId={coverLetter.coverLetterId}
+                    />
+                  </div>
+                  <div className="text-md-200 flex items-center gap-2 text-gray-30">
+                    <span>{formatDateString(coverLetter.localDateTime)}</span>
+                  </div>
+                </Link>
+              </li>
+            ))
+          )}
+        </ul>
       </div>
     </main>
   );

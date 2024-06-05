@@ -1,36 +1,23 @@
+import { useSearchParams } from 'react-router-dom';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 import 'dayjs/locale/ko';
-import { PickersDay, PickersDayProps } from '@mui/x-date-pickers';
-import { useState } from 'react';
+
+import DayItem from './DayItem';
 
 interface CalendarSectionProps {
   selectedDate: string;
-  setSelectedDate: (selectedDate: string) => void;
 }
 
-const Day = (props: PickersDayProps<Dayjs>) => {
-  const [lastDayList] = useState<number[]>([7, 15]);
+const CalendarSection = ({ selectedDate }: CalendarSectionProps) => {
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const { day, ...others } = props;
-
-  const isSelected = lastDayList.includes(props.day.date());
-
-  return (
-    <PickersDay {...others} day={day}>
-      {isSelected ? 's' : props.day.date()}
-    </PickersDay>
-  );
-};
-
-const CalendarSection = ({
-  selectedDate,
-  setSelectedDate,
-}: CalendarSectionProps) => {
   const handleDateChange = (value: any) => {
-    setSelectedDate(value.toISOString());
+    const newSearchParams = new URLSearchParams(searchParams);
+    newSearchParams.set('date', value.format('YYYY-MM-DD'));
+    setSearchParams(newSearchParams);
   };
 
   return (
@@ -40,7 +27,7 @@ const CalendarSection = ({
           <DateCalendar
             value={dayjs(selectedDate)}
             onChange={handleDateChange}
-            slots={{ day: Day }}
+            slots={{ day: DayItem }}
           />
         </LocalizationProvider>
       </div>

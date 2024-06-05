@@ -38,7 +38,7 @@ const PopUp = ({
 
   return (
     <div
-      className="fixed left-0 top-0 z-50 flex h-screen w-full cursor-pointer items-center justify-center bg-black bg-opacity-50"
+      className="fixed left-0 top-0 z-50 flex h-full w-full cursor-pointer items-center justify-center bg-black bg-opacity-50"
       onClick={onCancel}
     >
       <div
