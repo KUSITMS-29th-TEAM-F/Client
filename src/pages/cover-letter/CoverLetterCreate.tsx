@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import QuestionBox from '../../components/cover-letter/QuestionInput';
@@ -6,18 +6,64 @@ import BackButtonHeader from '../../components/ui/BackButtonHeader';
 import Dropdown from '../../components/ui/Dropdown';
 import PopUp from '../../components/ui/PopUp';
 import GrayBackground from '../../components/ui/global-style/GrayBackground';
+import { useQuery } from '@tanstack/react-query';
+import axios from '../../api/axios';
 
 const CoverLetterCreate = () => {
   const navigate = useNavigate();
 
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [isPopUpOpen, setIsPopUpOpen] = useState(false);
+  const [scholarshipList, setScholarshipList] = useState<
+    {
+      applyId: number;
+      scholarShipName: string;
+    }[]
+  >([]);
+  const [questionAnswerList, setQuestionAnswerList] = useState<
+    {
+      question: string;
+      content: string;
+    }[]
+  >([]);
 
-  const scholarshipItemList: string[] = [
-    '미래에셋 해외 교환장학',
-    '월곡주얼리장학생',
-    '인문100년장학금',
-  ];
+  const scholarshipItemList: string[] = scholarshipList.map(
+    (scholarship) => scholarship.scholarShipName,
+  );
+
+  useQuery({
+    queryKey: [],
+    queryFn: async () => {
+      const res = await axios.get('/apply-list/all');
+      setScholarshipList(res.data.data.applyList);
+      return res.data;
+    },
+  });
+
+  const getQuestionList = useQuery({
+    queryKey: [],
+    queryFn: async () => {
+      if (selectedIndex === null) return null;
+      const applyId = scholarshipList[selectedIndex].applyId;
+      const res = await axios.get(
+        `/members/cover-letters/questions/${applyId}`,
+      );
+      setQuestionAnswerList(
+        res.data.data.coverLetterQuestionList.map((question: string) => ({
+          question,
+          content: '',
+        })),
+      );
+      return res.data;
+    },
+    enabled: selectedIndex !== null,
+  });
+
+  const handleAnswerChange = (index: number, content: string) => {
+    const newQuestionAnswerList = [...questionAnswerList];
+    newQuestionAnswerList[index].content = content;
+    setQuestionAnswerList(newQuestionAnswerList);
+  };
 
   const handleBackButtonClick = () => {
     setIsPopUpOpen(true);
@@ -35,6 +81,10 @@ const CoverLetterCreate = () => {
   const handlePopUpCancel = () => {
     setIsPopUpOpen(false);
   };
+
+  useEffect(() => {
+    getQuestionList.refetch();
+  }, [selectedIndex]);
 
   return (
     <div className="pb-16">
@@ -75,21 +125,18 @@ const CoverLetterCreate = () => {
         <div className="mx-auto max-w-screen-lg">
           {selectedIndex !== null && (
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-              <QuestionBox
-                maxAnswerLength={1000}
-                question="어떤 학생인지 궁금해요. 성장배경, 학교생활, 가치관, 성격, 취향, 관심사 등 자신이 누구인지 알려주세요. (1000자 이내)"
-                input
-              />
-              <QuestionBox
-                maxAnswerLength={1000}
-                question="어떤 꿈을 꾸고 있나요? 주얼리 분야로 꾸는 꿈을 알려주세요, 그 꿈이 명확하다면 자세히 알려주세요. 하지만 아직은 막연하고 정확 하지 않을 수도 있어요. 괜찮아요 그 꿈을 이야기해주세요.(1000자 이내)"
-                input
-              />
-              <QuestionBox
-                maxAnswerLength={1000}
-                question="그 꿈을 이루기 위해 어떤 계획을 가지고 있나요? 경험하거나 실천한 것, 준비가 되어 있거나 현재 준비하고 있는 것들이 있다면 자세히 알려주세요. 그 과정에서 어렵고 해결하고 싶은 고민과 문제가 있다면 알려주세요."
-                input
-              />
+              {questionAnswerList.map((questionAnswer, index) => (
+                <QuestionBox
+                  key={index}
+                  maxAnswerLength={1500}
+                  question={questionAnswer.question}
+                  answer={questionAnswer.content}
+                  onAnswerChange={(e) =>
+                    handleAnswerChange(index, e.target.value)
+                  }
+                  input
+                />
+              ))}
             </div>
           )}
         </div>

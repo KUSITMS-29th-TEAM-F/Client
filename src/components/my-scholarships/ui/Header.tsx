@@ -28,7 +28,7 @@ const Header = () => {
 
   return (
     <header className="my-scholarships-header h-[5.5rem]">
-      <div className="fixed w-full bg-gray-00">
+      <div className="fixed z-10 w-full bg-gray-00">
         <div className="mx-auto max-w-screen-lg">
           <div className="flex items-center gap-3 px-4 py-3 lg:px-0">
             <div>

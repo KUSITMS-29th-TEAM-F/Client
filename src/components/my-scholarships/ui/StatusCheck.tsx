@@ -2,9 +2,9 @@ import clsx from 'clsx';
 import { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import ChevronRightIcon from '../ui/icon/ChevronRightIcon';
-import CheckIcon from '../ui/icon/CheckIcon';
-import axios from '../../api/axios';
+import ChevronRightIcon from '../../ui/icon/ChevronRightIcon';
+import CheckIcon from '../../ui/icon/CheckIcon';
+import axios from '../../../api/axios';
 
 interface StatusCheckProps {
   myScholarshipId: number;

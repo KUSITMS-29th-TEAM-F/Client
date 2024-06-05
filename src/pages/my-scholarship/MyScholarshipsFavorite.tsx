@@ -4,6 +4,7 @@ import HeartFilledIcon from '../../components/ui/icon/HeartFilledIcon';
 import { useQuery } from '@tanstack/react-query';
 import axios from '../../api/axios';
 import { useState } from 'react';
+import GrayBackground from '../../components/ui/global-style/GrayBackground';
 
 const MyScholarshipsFavorite = () => {
   const [scholarshipList, setScholarshipList] = useState<
@@ -33,6 +34,7 @@ const MyScholarshipsFavorite = () => {
 
   return (
     <main className="p-4 pb-16">
+      <GrayBackground />
       <ul className="mx-auto grid max-w-screen-lg grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         {scholarshipList.map((scholarship) => (
           <li key={scholarship.scholarshipId}>

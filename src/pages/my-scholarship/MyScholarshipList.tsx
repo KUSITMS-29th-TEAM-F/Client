@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import axios from '../../api/axios';
 import clsx from 'clsx';
 import Status, { StatusProps } from '../../components/ui/Status';
+import GrayBackground from '../../components/ui/global-style/GrayBackground';
 
 const MyScholarshipsList = () => {
   const [searchParams] = useSearchParams();
@@ -47,6 +48,7 @@ const MyScholarshipsList = () => {
     queryFn: async () => {
       const res = await axios.get(`/apply-list/${status}`);
       setScholarshipList(res.data.data.applyList);
+      console.log(res.data);
       return res.data;
     },
   });
@@ -68,6 +70,7 @@ const MyScholarshipsList = () => {
 
   return (
     <main className="p-4 pb-16">
+      <GrayBackground />
       <div className="mx-auto max-w-screen-lg">
         <div className="flex items-center gap-2">
           {badgeList.map((badge, index) => (

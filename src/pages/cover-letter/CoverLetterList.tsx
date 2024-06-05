@@ -1,54 +1,32 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import FileDescriptionIcon from '../../components/ui/icon/FileDescriptionIcon';
 import DotsMenuWrapper from '../../components/cover-letter/DotsMenuWrapper';
 import FloatingActionButton from '../../components/ui/FloatingActionButton';
 import PencilIcon from '../../components/ui/icon/PencilIcon';
+import { useQuery } from '@tanstack/react-query';
+import axios from '../../api/axios';
 
 const CoverLetterList = () => {
-  const coverLetterList: {
-    id: number;
-    title: string;
-    organization: string;
-    date: string;
-  }[] = [
+  const [coverLetterList, setCoverLetterList] = useState<
     {
-      id: 1,
-      title: '월곡주얼리 최종',
-      organization: '월곡주얼리장학생 | 월곡주얼리산업진흥재단',
-      date: '2024.05.17',
+      coverLetterId: number;
+      scholarshipFoundation: string;
+      scholarshipName: string;
+      title: string;
+      updatedAt: string;
+    }[]
+  >([]);
+
+  useQuery({
+    queryKey: ['members', 'cover-letters'],
+    queryFn: async () => {
+      const res = await axios.get('/members/cover-letters');
+      setCoverLetterList(res.data.data.coverLetterList);
+      return res.data;
     },
-    {
-      id: 2,
-      title: '얼곡주얼리 초안',
-      organization: '월곡주얼리장학생 | 월곡주얼리산업진흥재단',
-      date: '2024.05.03',
-    },
-    {
-      id: 3,
-      title: '월곡주얼리 1차',
-      organization: '월곡주얼리장학생 | 월곡주얼리산업진흥재단',
-      date: '2024.04.20',
-    },
-    {
-      id: 4,
-      title: '세아해암',
-      organization: '세아해암 클래식 창의지원 장학생 | 세아해암학술장학재단',
-      date: '2024.03.28',
-    },
-    {
-      id: 5,
-      title: '클래식 창의지원',
-      organization: '세아해암 클래식 창의지원 장학생 | 세아해암학술장학재단',
-      date: '2024.03.26',
-    },
-    {
-      id: 6,
-      title: '우덕재안 최최종',
-      organization: '우덕재단 우(友) | 우덕재단',
-      date: '2024.03.26',
-    },
-  ];
+  });
 
   return (
     <div className="px-6 pb-28">
@@ -67,9 +45,9 @@ const CoverLetterList = () => {
         <main>
           <ul>
             {coverLetterList.map((coverLetter) => (
-              <li key={coverLetter.id}>
+              <li key={coverLetter.coverLetterId}>
                 <Link
-                  to={`/cover-letters/${coverLetter.id}`}
+                  to={`/cover-letters/${coverLetter.coverLetterId}`}
                   className="flex flex-col gap-2 border-t border-gray-05 px-2 py-5 last:border-b"
                 >
                   <div className="flex items-center gap-1">
@@ -79,13 +57,15 @@ const CoverLetterList = () => {
                     <h2 className="text-lg-200 flex-1 text-gray-80">
                       {coverLetter.title}
                     </h2>
-                    <DotsMenuWrapper coverLetterId={coverLetter.id} />
+                    <DotsMenuWrapper
+                      coverLetterId={coverLetter.coverLetterId}
+                    />
                   </div>
                   <div className="text-md-200 text-gray-40">
-                    {coverLetter.organization}
+                    {coverLetter.scholarshipFoundation}
                   </div>
                   <div className="text-md-200 text-gray-30">
-                    {coverLetter.date}
+                    {coverLetter.updatedAt}
                   </div>
                 </Link>
               </li>

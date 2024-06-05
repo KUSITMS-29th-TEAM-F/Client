@@ -2,7 +2,6 @@ import clsx from 'clsx';
 import { Link, useNavigate } from 'react-router-dom';
 
 import ChevronRightIcon from '../icon/ChevronRightIcon';
-import LoginModal from './LoginModal';
 
 export interface DrawerProps {
   isDrawerOpen: boolean;
@@ -18,8 +17,6 @@ export interface DrawerProps {
     onClick?: () => void;
   }[];
   isLoggedIn: boolean | null;
-  isLoginModalOpen: boolean;
-  setIsLoginModalOpen: (isLoginModalOpen: boolean) => void;
   nickname: string;
 }
 
@@ -28,8 +25,6 @@ const Drawer = ({
   setIsDrawerOpen,
   menuList,
   isLoggedIn,
-  isLoginModalOpen,
-  setIsLoginModalOpen,
   nickname,
 }: DrawerProps) => {
   const navigate = useNavigate();
@@ -44,7 +39,7 @@ const Drawer = ({
       navigate('/me');
     } else {
       setIsDrawerOpen(false);
-      setIsLoginModalOpen(true);
+      navigate('/login');
     }
   };
 
@@ -155,10 +150,6 @@ const Drawer = ({
           </ul>
         </div>
       </div>
-      <LoginModal
-        isLoginModalOpen={isLoginModalOpen}
-        setIsLoginModalOpen={setIsLoginModalOpen}
-      />
     </>
   );
 };

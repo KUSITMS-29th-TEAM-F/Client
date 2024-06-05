@@ -25,6 +25,11 @@ import DocumentList from './pages/mypage/documents/DocumentList';
 import DocumentNew from './pages/mypage/documents/DocumentNew';
 import DocumentEdit from './pages/mypage/documents/DocumentEdit';
 import Privacy from './pages/mypage/privacy/Privacy';
+import SearchScholarships from './pages/search/SearchScholarships';
+import Login from './pages/auth/Login';
+import Landing from './pages/landing/Landing';
+import FoundationDetail from './pages/foundation/FoundationDetail';
+import AuthRoute from './pages/auth/AuthRoute';
 
 export const router = createBrowserRouter([
   {
@@ -35,6 +40,14 @@ export const router = createBrowserRouter([
         element: <Home />,
       },
       {
+        path: '/landing',
+        element: <Landing />,
+      },
+      {
+        path: '/login',
+        element: <Login />,
+      },
+      {
         path: '/auth/kakao/callback',
         element: <AuthKakaoCallback />,
       },
@@ -43,117 +56,136 @@ export const router = createBrowserRouter([
         element: <Onboarding />,
       },
       {
-        path: '/scholarships',
+        path: '',
+        element: <AuthRoute />,
         children: [
           {
-            path: '',
-            element: <AllScholarships />,
-          },
-          {
-            path: ':id',
-            element: <ScholarshipDetail />,
-          },
-        ],
-      },
-      {
-        path: '/recommend',
-        element: <RecommendScholarships />,
-      },
-      {
-        path: '/my-scholarships',
-        element: <MyScholarshipsLayout />,
-        children: [
-          {
-            path: 'date',
-            element: <MyScholarshipsDate />,
-          },
-          {
-            path: 'list',
-            element: <MyScholarshipsList />,
-          },
-          { path: 'favorite', element: <MyScholarshipsFavorite /> },
-          { path: ':id', element: <MyScholarshipDetail /> },
-        ],
-      },
-      {
-        path: '/cover-letters',
-        children: [
-          {
-            path: '',
-            element: <CoverLetterList />,
-          },
-          {
-            path: 'new',
-            element: <CoverLetterCreate />,
-          },
-          {
-            path: ':id',
+            path: '/scholarships',
             children: [
               {
                 path: '',
-                element: <CoverLetterDetail />,
+                element: <AllScholarships />,
               },
               {
-                path: 'edit',
-                element: <CoverLetterEdit />,
+                path: ':id',
+                element: <ScholarshipDetail />,
               },
             ],
           },
-        ],
-      },
-      {
-        path: '/me',
-        children: [
           {
-            path: '',
-            element: <MyPage />,
+            path: '/recommend',
+            element: <RecommendScholarships />,
           },
           {
-            path: 'documents',
+            path: '/foundations',
+            children: [
+              {
+                path: ':id',
+                element: <FoundationDetail />,
+              },
+            ],
+          },
+          {
+            path: '/my-scholarships',
+            element: <MyScholarshipsLayout />,
+            children: [
+              {
+                path: 'date',
+                element: <MyScholarshipsDate />,
+              },
+              {
+                path: 'list',
+                element: <MyScholarshipsList />,
+              },
+              { path: 'favorite', element: <MyScholarshipsFavorite /> },
+              { path: ':id', element: <MyScholarshipDetail /> },
+            ],
+          },
+          {
+            path: '/cover-letters',
             children: [
               {
                 path: '',
-                element: <DocumentList />,
+                element: <CoverLetterList />,
               },
               {
                 path: 'new',
-                element: <DocumentNew />,
+                element: <CoverLetterCreate />,
               },
               {
-                path: ':id/edit',
-                element: <DocumentEdit />,
+                path: ':coverLetterId',
+                children: [
+                  {
+                    path: '',
+                    element: <CoverLetterDetail />,
+                  },
+                  {
+                    path: 'edit',
+                    element: <CoverLetterEdit />,
+                  },
+                ],
               },
             ],
           },
           {
-            path: 'privacy',
-            element: <Privacy />,
-          },
-          {
-            path: 'reviews',
+            path: '/me',
             children: [
               {
                 path: '',
-                element: <ReviewList />,
+                element: <MyPage />,
               },
               {
-                path: ':id/edit',
-                element: <ReviewEdit />,
+                path: 'documents',
+                children: [
+                  {
+                    path: '',
+                    element: <DocumentList />,
+                  },
+                  {
+                    path: 'new',
+                    element: <DocumentNew />,
+                  },
+                  {
+                    path: ':id/edit',
+                    element: <DocumentEdit />,
+                  },
+                ],
+              },
+              {
+                path: 'privacy',
+                element: <Privacy />,
+              },
+              {
+                path: 'reviews',
+                children: [
+                  {
+                    path: '',
+                    element: <ReviewList />,
+                  },
+                  {
+                    path: ':id/edit',
+                    element: <ReviewEdit />,
+                  },
+                ],
               },
             ],
           },
-        ],
-      },
-      {
-        path: '/articles',
-        children: [
           {
-            path: '',
-            element: <ArticleList />,
+            path: '/articles',
+            children: [
+              {
+                path: '',
+                element: <ArticleList />,
+              },
+              {
+                path: ':id',
+                element: <ArticleDetail />,
+              },
+            ],
           },
           {
-            path: ':id',
-            element: <ArticleDetail />,
+            path: '/search',
+            element: <SearchScholarships />,
           },
         ],
       },

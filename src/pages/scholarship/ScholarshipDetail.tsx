@@ -23,7 +23,10 @@ const ScholarshipDetail = () => {
     supportAmount: string;
     applicationPeriod: string;
     hashTag: string;
-    applyCondition: string[];
+    conditionCheckResponseList: {
+      subject: string;
+      light: string;
+    }[];
     detailContents: string;
     likes: number;
     memberIsLiked: boolean;
@@ -39,7 +42,7 @@ const ScholarshipDetail = () => {
     supportAmount: '',
     applicationPeriod: '',
     hashTag: '',
-    applyCondition: [],
+    conditionCheckResponseList: [],
     detailContents: '',
     likes: 0,
     memberIsLiked: false,
@@ -51,6 +54,7 @@ const ScholarshipDetail = () => {
     queryKey: ['announcements', params.id],
     queryFn: async () => {
       const res = await axios.get(`/announcements/${params.id}`);
+      console.log(res.data.data);
       setScholarship(res.data.data);
       return res.data;
     },
@@ -68,11 +72,13 @@ const ScholarshipDetail = () => {
         <div className="mx-auto flex max-w-screen-lg flex-col md:flex-row md:gap-6 lg:gap-8">
           <section className="flex-1">
             <div className="relative aspect-square w-full md:aspect-auto md:h-full">
-              <img
-                src={scholarship.scholarShipImage}
-                alt={scholarship.scholarshipName}
-                className="h-full w-full object-cover"
-              />
+              {scholarship.scholarShipImage && (
+                <img
+                  src={scholarship.scholarShipImage}
+                  alt={scholarship.scholarshipName}
+                  className="h-full w-full object-cover"
+                />
+              )}
               {scholarship.remainingDay >= 0 && (
                 <Capsule
                   variant="primary"
@@ -108,23 +114,23 @@ const ScholarshipDetail = () => {
               <section className="border-t border-gray-10 px-4 py-4 md:px-0">
                 <h2 className="text-lg-200">지원조건</h2>
                 <div className="mt-2 flex flex-wrap gap-2">
-                  {scholarship.applyCondition.map((condition, index) => (
-                    <Capsule
-                      key={index}
-                      size="sm"
-                      variant={
-                        index % 3 === 0
-                          ? 'stroke-default'
-                          : index % 3 === 1
+                  {scholarship.conditionCheckResponseList.map(
+                    (condition, index) => (
+                      <Capsule
+                        key={index}
+                        size="sm"
+                        variant={
+                          condition.light === '초록불'
                             ? 'stroke-success'
-                            : index % 3 === 2
+                            : condition.light === '빨간불'
                               ? 'stroke-danger'
                               : 'stroke-default'
-                      }
-                    >
-                      {condition}
-                    </Capsule>
-                  ))}
+                        }
+                      >
+                        {condition.subject}
+                      </Capsule>
+                    ),
+                  )}
                 </div>
               </section>
             </div>
@@ -136,7 +142,7 @@ const ScholarshipDetail = () => {
               >
                 지원하기
               </Link>
-              <Link to="/foundations">
+              <Link to="/foundations/1">
                 <Button variant="light-primary">
                   <span className="text-lg-300 flex gap-1 text-gray-80">
                     <span className="text-[1.25rem]">

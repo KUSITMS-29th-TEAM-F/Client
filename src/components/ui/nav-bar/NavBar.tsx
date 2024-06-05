@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import MenuIcon from '../icon/MenuIcon';
 import SearchIcon from '../icon/SearchIcon';
@@ -7,17 +7,16 @@ import Drawer, { DrawerProps } from './Drawer';
 import SearchBarModal from './SearchBarModal';
 import SearchBar from './SearchBar';
 import ProfileDesktop from './ProfileDesktop';
-import PopUp from '../PopUp';
 import axios from '../../../api/axios';
 
 const NavBar = () => {
+  const navigate = useNavigate();
+
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
   const [isSearchBarOpen, setIsSearchBarOpen] = useState<boolean>(false);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
   const [nickname, setNickname] = useState<string>('');
-  const [isSearchBarPopUpOpen, setIsSearchBarPopUpOpen] =
-    useState<boolean>(false);
+  const [searchKeyword, setSearchKeyword] = useState<string>('');
 
   const menuList: DrawerProps['menuList'] = [
     {
@@ -52,8 +51,10 @@ const NavBar = () => {
     },
   ];
 
-  const handleAuthButtonClick = () => {
-    setIsLoginModalOpen(true);
+  const handleSearchBarSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsSearchBarOpen(false);
+    navigate(`/search?q=${searchKeyword}`);
   };
 
   useEffect(() => {
@@ -65,11 +66,6 @@ const NavBar = () => {
     };
     fetchData();
   }, []);
-
-  const handleSearchBarSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsSearchBarPopUpOpen(true);
-  };
 
   return (
     <>
@@ -84,12 +80,14 @@ const NavBar = () => {
                     alt="네비게이션 헤더 로고"
                   />
                 </Link>
-                <form
-                  className="hidden lg:block"
-                  onSubmit={handleSearchBarSubmit}
-                >
-                  <SearchBar className="w-[25rem]" />
-                </form>
+                <div className="hidden lg:block">
+                  <SearchBar
+                    className="w-[25rem]"
+                    searchKeyword={searchKeyword}
+                    setSearchKeyword={setSearchKeyword}
+                    onSubmit={handleSearchBarSubmit}
+                  />
+                </div>
               </div>
               <div>
                 {isLoggedIn === null ? null : isLoggedIn ? (
@@ -98,18 +96,8 @@ const NavBar = () => {
                   </div>
                 ) : (
                   <div className="text-lg-200 hidden items-center gap-2 text-gray-40 lg:flex">
-                    <span
-                      onClick={handleAuthButtonClick}
-                      className="cursor-pointer"
-                    >
-                      로그인
-                    </span>
-                    <span
-                      onClick={handleAuthButtonClick}
-                      className="cursor-pointer"
-                    >
-                      회원가입
-                    </span>
+                    <Link to="/login">로그인</Link>
+                    <Link to="/login">회원가입</Link>
                   </div>
                 )}
                 <div className="flex items-center gap-4 text-[1.5rem] lg:hidden">
@@ -144,28 +132,15 @@ const NavBar = () => {
         setIsDrawerOpen={setIsDrawerOpen}
         menuList={menuList}
         isLoggedIn={isLoggedIn}
-        isLoginModalOpen={isLoginModalOpen}
-        setIsLoginModalOpen={setIsLoginModalOpen}
         nickname={nickname}
       />
       <SearchBarModal
         isSearchBarOpen={isSearchBarOpen}
         setIsSearchBarOpen={setIsSearchBarOpen}
+        searchKeyword={searchKeyword}
+        setSearchKeyword={setSearchKeyword}
+        handleSearchBarSubmit={handleSearchBarSubmit}
       />
-      {isSearchBarPopUpOpen && (
-        <PopUp
-          confirmButton={{
-            label: '확인',
-          }}
-          cancelButton={{
-            label: '취소',
-          }}
-          onConfirm={() => setIsSearchBarPopUpOpen(false)}
-          onCancel={() => setIsSearchBarPopUpOpen(false)}
-        >
-          지원하지 않는 기능입니다.
-        </PopUp>
-      )}
     </>
   );
 };

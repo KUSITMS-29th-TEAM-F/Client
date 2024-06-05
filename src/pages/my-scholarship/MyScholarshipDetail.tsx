@@ -2,9 +2,9 @@ import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 
-import HeaderHide from '../../components/my-scholarships/HeaderHide';
+import HeaderHide from '../../components/my-scholarships/ui/HeaderHide';
 import BackButtonHeader from '../../components/ui/BackButtonHeader';
-import StatusCheck from '../../components/my-scholarships/StatusCheck';
+import StatusCheck from '../../components/my-scholarships/ui/StatusCheck';
 import BookmarkFilledIcon from '../../components/ui/icon/BookmarkFilledIcon';
 import ChevronRightIcon from '../../components/ui/icon/ChevronRightIcon';
 import Button from '../../components/ui/Button';
