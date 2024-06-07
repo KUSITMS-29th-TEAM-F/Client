@@ -17,6 +17,8 @@ const SearchScholarships = () => {
       scholarShipName: string;
       scholarshipFoundation: string;
       applicationPeriod: string;
+      applyPossible: string;
+      remainingDays: number;
     }[]
   >([]);
 
@@ -53,11 +55,24 @@ const SearchScholarships = () => {
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <Capsule size="sm" variant="default">
-                      D-12
+                    <Capsule size="sm">
+                      {scholarship.remainingDays >= 0
+                        ? `D-${scholarship.remainingDays}`
+                        : '모집마감'}
                     </Capsule>
-                    <Capsule size="sm" variant="stroke-success">
-                      지원대상
+                    <Capsule
+                      variant={
+                        scholarship.applyPossible === '지원불가'
+                          ? 'stroke-danger'
+                          : scholarship.applyPossible === '지원대상'
+                            ? 'stroke-success'
+                            : scholarship.applyPossible === '판단불가'
+                              ? 'stroke-default'
+                              : 'stroke-default'
+                      }
+                      size="sm"
+                    >
+                      {scholarship.applyPossible}
                     </Capsule>
                   </div>
                   <div>

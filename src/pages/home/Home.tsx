@@ -22,9 +22,9 @@ const Home = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
   useQuery({
-    queryKey: ['home', 'announcements'],
+    queryKey: ['home', 'popular-announcements'],
     queryFn: async () => {
-      const res = await Axios.get('/home/announcements');
+      const res = await Axios.get('/home/popular-announcements');
       setPopularScholarshipList(res.data.data.popularAnnouncementResponses);
       return res.data;
     },
