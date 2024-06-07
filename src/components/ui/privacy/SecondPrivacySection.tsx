@@ -51,14 +51,11 @@ const SecondPrivacySection = ({
         />
       </FormControl>
       <FormControl label="학과">
-        <UnitInput
-          inputProps={{
-            type: 'text',
-            name: 'department',
-            value: value.department,
-            onChange: handleInputChange,
-          }}
-          unit="학과/학부"
+        <Input
+          type="text"
+          name="department"
+          value={value.department}
+          onChange={handleInputChange}
         />
       </FormControl>
       <FormControl label="재적상태">
