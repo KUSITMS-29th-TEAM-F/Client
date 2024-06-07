@@ -118,19 +118,19 @@ const MyScholarshipDetail = () => {
                   <ChevronRightIcon />
                 </span>
               </Link>
-              {myScholarship.applyStatus === '합격' ||
-                (myScholarship.applyStatus === '불합격' && (
-                  <div className="px-4 py-6 md:px-0">
-                    <Button variant="light-primary">
-                      <div className="flex items-center gap-1">
-                        <span className="text-[1.25rem]">
-                          <MessageDotsIcon />
-                        </span>
-                        <span>후기 작성하기</span>
-                      </div>
-                    </Button>
-                  </div>
-                ))}
+              {(myScholarship.applyStatus === '합격' ||
+                myScholarship.applyStatus === '불합격') && (
+                <div className="px-4 py-6 md:px-0">
+                  <Button variant="light-primary">
+                    <div className="flex items-center gap-1">
+                      <span className="text-[1.25rem]">
+                        <MessageDotsIcon />
+                      </span>
+                      <span>후기 작성하기</span>
+                    </div>
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
         </div>

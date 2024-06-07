@@ -91,16 +91,16 @@ const ArticleList = () => {
               <li key={article.id}>
                 <Link
                   to={`/articles/${article.id}`}
-                  className="flex items-center gap-4 px-6 py-4"
+                  className="flex h-[6rem] items-center gap-4 px-6 py-4"
                 >
-                  <div className="relative aspect-square w-[5rem] overflow-hidden rounded-lg">
+                  <div className="aspect-square w-[4rem] overflow-hidden rounded-lg">
                     <img
                       src={article.imageSrc}
                       alt={article.title}
                       className="h-full w-full object-cover"
                     />
                   </div>
-                  <div className="flex min-w-0 flex-col gap-2">
+                  <div className="flex min-w-0 flex-1 flex-col gap-2">
                     <h2 className="text-lg-200 line-clamp-2 text-gray-90">
                       {article.title}
                     </h2>
