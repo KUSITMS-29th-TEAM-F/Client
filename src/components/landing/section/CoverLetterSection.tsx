@@ -21,7 +21,7 @@ const CoverLetterSection = () => {
         </div>
         <div className="h-[30rem] w-full">
           <img
-            src="/images/landing/phone2.png"
+            src="/images/landing/phone4.png"
             alt="스마트폰 이미지 2"
             className="h-full w-full object-cover object-top"
           />
