@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import clsx from 'clsx';
 import { useNavigate } from 'react-router-dom';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import {
   areaList,
@@ -28,8 +29,10 @@ import ThirdPrivacySection from '../../components/ui/privacy/ThirdPrivacySection
 import CompleteSection from '../../components/onboarding/CompleteSection';
 import Button from '../../components/ui/Button';
 import NavBarHide from '../../components/ui/global-style/NavBarHide';
+import { OnboardRequestType } from '../mypage/privacy/Privacy';
 
 const Onboarding = () => {
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
 
   const [page, setPage] = useState<number>(0);
@@ -37,6 +40,16 @@ const Onboarding = () => {
   const [value, setValue] = useState<PrivacyInputValue>(initPrivacyValue);
 
   const pageSize = 4;
+
+  const saveOnboarding = useMutation({
+    mutationFn: async (value: OnboardRequestType) => {
+      const res = await axios.post('/onboards', value);
+      return res.data;
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['onboards'] });
+    },
+  });
 
   const handleInputChange: PrivacySectionProps['handleInputChange'] = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -52,12 +65,13 @@ const Onboarding = () => {
   const handleNextButtonClick = async () => {
     window.scrollTo(0, 0);
     if (page === 0) {
-      const res = await axios.post('/onboards/nick-name', { nickname });
-      console.log(res.data);
-      const accessToken = res.data.accessToken;
-      localStorage.setItem('access_token', accessToken);
+      const res = await axios.post('/onboards/nick-name', {
+        nickName: nickname,
+      });
+      const accessToken = res.data.data.accessToken;
+      localStorage.setItem('access-token', accessToken);
     } else if (page === 3) {
-      const newValues = {
+      const newValue = {
         schoolType: value.universityType,
         schoolName: value.universityName,
         schoolLocation:
@@ -98,8 +112,7 @@ const Onboarding = () => {
             ? Number(supportIncomeBracketList[value.supportIncomeBracket])
             : null,
       };
-      const res = await axios.post('/onboards', newValues);
-      console.log(res.data);
+      saveOnboarding.mutate(newValue);
     }
     if (page <= 3) {
       setPage(page + 1);

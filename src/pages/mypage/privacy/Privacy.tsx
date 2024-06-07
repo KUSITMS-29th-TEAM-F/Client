@@ -25,7 +25,7 @@ import {
 } from '../../../constants/optionList';
 import Divider from '../../../components/ui/Divider';
 
-interface OnboardRequestType {
+export interface OnboardRequestType {
   schoolType: number | null;
   schoolName: string;
   schoolLocation: string | null;
@@ -60,7 +60,6 @@ const Privacy = () => {
       const onboard = res.data.data;
       console.log(onboard);
       setValue({
-        ...initPrivacyValue,
         gender: onboard.gender,
         year: yearList.findIndex((year) => year === `${onboard.birthYear}`),
         city: cityList.findIndex(

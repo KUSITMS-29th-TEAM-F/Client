@@ -19,6 +19,7 @@ const MultipleSelect = ({
           size="sm"
           variant={index == selectedIndex ? 'stroke-primary' : 'stroke-default'}
           onClick={() => setSelectedIndex(index)}
+          className="cursor-pointer"
         >
           {departmentGroup}
         </Capsule>
