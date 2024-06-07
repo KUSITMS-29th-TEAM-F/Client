@@ -115,7 +115,7 @@ const Home = () => {
                   className="block rounded-2xl border border-gray-10 bg-gray-00 p-4"
                 >
                   <div className="flex items-start">
-                    <div className="relative aspect-square w-[4rem] overflow-hidden rounded-lg">
+                    <div className="aspect-square w-[4rem] overflow-hidden rounded-lg">
                       <img
                         src={scholarship.scholarShipImage}
                         alt={scholarship.scholarShipName}
