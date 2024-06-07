@@ -107,7 +107,7 @@ const Home = () => {
               전체보기
             </Link>
           </div>
-          <ul className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <ul className="flex flex-col gap-4 md:grid md:grid-cols-2 lg:grid-cols-3">
             {popularScholarshipList.map((scholarship) => (
               <li key={scholarship.announcementId}>
                 <Link
