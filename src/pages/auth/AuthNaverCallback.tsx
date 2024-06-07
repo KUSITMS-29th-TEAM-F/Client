@@ -15,23 +15,19 @@ const AuthNaverCallback = () => {
       try {
         if (!onlyOnce) return;
         if (!code) return;
-        const kakaoRes = await _axios.get(
-          `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${
-            import.meta.env.VITE_KAKAO_REST_API_KEY
-          }&redirect_uri=${
-            import.meta.env.VITE_KAKAO_REDIRECT_URL
-          }&code=${code}&client_secret=${
-            import.meta.env.VITE_KAKAO_CLIENT_SECRET
-          }`,
+        const naverRes = await _axios.get(
+          `https://nid.naver.com/oauth2.0/token?grant_type=authorization_code&client_id=${
+            import.meta.env.VITE_NAVER_CLIENT_ID
+          }&client_secret=${import.meta.env.VITE_NAVER_CLIENT_SECRET}&code=${code}&state=${import.meta.env.VITE_NAVER_STATE}`,
         );
 
         const res = await axios.post(
-          '/login/kakao',
+          '/login/naver',
           {},
           {
             headers: {
               'Content-Type': 'application/json',
-              socialAccessToken: kakaoRes.data.access_token,
+              socialAccessToken: naverRes.data.access_token,
             },
           },
         );

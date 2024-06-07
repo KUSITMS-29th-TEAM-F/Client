@@ -50,7 +50,6 @@ const MyScholarshipDetail = () => {
     queryKey: ['apply-list', myScholarshipId],
     queryFn: async () => {
       const res = await axios.get(`/apply-list/${myScholarshipId}`);
-      console.log(res.data.data);
       setMyScholarship(res.data.data);
       return res.data;
     },
@@ -119,16 +118,19 @@ const MyScholarshipDetail = () => {
                   <ChevronRightIcon />
                 </span>
               </Link>
-              <div className="px-4 py-6 md:px-0">
-                <Button variant="light-primary">
-                  <div className="flex items-center gap-1">
-                    <span className="text-[1.25rem]">
-                      <MessageDotsIcon />
-                    </span>
-                    <span>후기 작성하기</span>
+              {myScholarship.applyStatus === '합격' ||
+                (myScholarship.applyStatus === '불합격' && (
+                  <div className="px-4 py-6 md:px-0">
+                    <Button variant="light-primary">
+                      <div className="flex items-center gap-1">
+                        <span className="text-[1.25rem]">
+                          <MessageDotsIcon />
+                        </span>
+                        <span>후기 작성하기</span>
+                      </div>
+                    </Button>
                   </div>
-                </Button>
-              </div>
+                ))}
             </div>
           </div>
         </div>
@@ -138,7 +140,7 @@ const MyScholarshipDetail = () => {
         <div className="flex items-center justify-between p-4 lg:pt-8">
           <h2 className="title-sm-300 text-gray-80">작성한 자기소개서</h2>
           <Link
-            to="/cover-letters/new"
+            to={`/cover-letters/new?applyId=${myScholarship.applyId}`}
             className="flex items-center gap-1 text-primary"
           >
             <span className="text-[1.125rem]">

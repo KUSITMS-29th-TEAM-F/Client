@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
 
-import NaverIcon from '../../components/ui/icon/NaverIcon';
 import KakaoIcon from '../../components/ui/icon/KakaoIcon';
 import BackgroundLogoDesign from '../../components/login/background/BackgroundLogoDesign';
 import BackgroundGradient from '../../components/login/background/BackgroundGradient';
@@ -55,19 +54,17 @@ const Login = () => {
                 카카오 로그인
               </span>
             </Link>
-            <Link
+            {/* <Link
               to={`https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${
                 import.meta.env.VITE_NAVER_CLIENT_ID
-              }&client_secret=${
-                import.meta.env.VITE_NAVER_CLIENT_SECRET
-              }&redirect_uri=${import.meta.env.VITE_NAVER_REDIRECT_URL}`}
+              }&redirect_uri=${import.meta.env.VITE_NAVER_REDIRECT_URL}&state=${import.meta.env.VITE_NAVER_STATE}`}
               className="flex w-full items-center justify-center gap-2 rounded-xl bg-naver-green py-4 text-gray-00"
             >
               <span>
                 <NaverIcon fill="#181600" />
               </span>
               <span className="text-md-200 text-gray-00">네이버 로그인</span>
-            </Link>
+            </Link> */}
           </div>
         </div>
       </div>

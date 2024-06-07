@@ -11,11 +11,10 @@ const ArticleDetail = () => {
           label: '아티클',
           backUrl: '-1',
         }}
-        relative="md"
         fixed
       />
       <div className="px-4 pt-2">
-        <div className="mx-auto max-w-screen-md">
+        <div className="mx-auto max-w-screen-lg">
           <header className="flex flex-col gap-6">
             <div className="relative aspect-video w-full overflow-hidden rounded-2xl">
               <img

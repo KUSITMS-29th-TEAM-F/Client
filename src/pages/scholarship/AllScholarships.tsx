@@ -1,34 +1,43 @@
+import clsx from 'clsx';
 import { useEffect, useState } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
 
 import { ScholarshipListContentProps } from '../../components/ui/ScholarshipListContent';
 import axios from '../../api/axios';
-import clsx from 'clsx';
 import Capsule from '../../components/ui/Capsule';
-import { Link } from 'react-router-dom';
 import GrayBackground from '../../components/ui/global-style/GrayBackground';
 
 const AllScholarships = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const filterStatusRaw = ['ING', 'UPCOMING', 'FINISHED'];
+
   const [scholarshipList, setScholarshipList] = useState<
     ScholarshipListContentProps['scholarshipList']
   >([]);
+  const [filterActiveIndexList, setFilterActiveIndexList] = useState<boolean[]>(
+    searchParams.get('status')
+      ? filterStatusRaw.map((filter) =>
+          searchParams.getAll('status').includes(filter),
+        )
+      : [true, false, false],
+  );
 
   const title = '전체 장학금';
   const icon = '/icons/menu/all-scholarships-icon.svg';
   const filterList = ['모집중', '모집예정', '모집마감'];
 
-  const [filterActiveIndexList, setFilterActiveIndexList] = useState<boolean[]>(
-    [true, false, false],
-  );
-
   const handleFilterClick = (index: number) => {
     const updatedFilterActiveIndexList = [...filterActiveIndexList];
     updatedFilterActiveIndexList[index] = !updatedFilterActiveIndexList[index];
     setFilterActiveIndexList(updatedFilterActiveIndexList);
+    setSearchParams({
+      status: filterStatusRaw.filter((_, i) => updatedFilterActiveIndexList[i]),
+    });
   };
 
   useEffect(() => {
     const fetchData = async () => {
-      const filterStatusRaw = ['ING', 'UPCOMING', 'FINISHED'];
       const filterStatus = filterStatusRaw.filter(
         (_, index) => filterActiveIndexList[index],
       );

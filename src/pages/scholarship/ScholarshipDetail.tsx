@@ -10,29 +10,31 @@ import ScholarshipTabSection from '../../components/scholarship/detail/section/S
 import ScholarshipBottomAction from '../../components/scholarship/detail/section/ScholarshipBottomAction';
 import axios from '../../api/axios';
 
+interface ScholarshipType {
+  scholarshipId: number;
+  scholarShipImage: string;
+  scholarshipName: string;
+  scholarshipFoundation: string;
+  remainingDay: number;
+  applyPossible: string;
+  supportAmount: string;
+  applicationPeriod: string;
+  hashTag: string;
+  conditionCheckResponseList: {
+    subject: string;
+    light: string;
+  }[];
+  detailContents: string;
+  likes: number;
+  memberIsLiked: boolean;
+  memberIsStored: boolean;
+  applyLink: string;
+}
+
 const ScholarshipDetail = () => {
   const params = useParams<{ id: string }>();
 
-  const [scholarship, setScholarship] = useState<{
-    scholarshipId: number;
-    scholarShipImage: string;
-    scholarshipName: string;
-    scholarshipFoundation: string;
-    remainingDay: number;
-    applyPossible: string;
-    supportAmount: string;
-    applicationPeriod: string;
-    hashTag: string;
-    conditionCheckResponseList: {
-      subject: string;
-      light: string;
-    }[];
-    detailContents: string;
-    likes: number;
-    memberIsLiked: boolean;
-    memberIsStored: boolean;
-    applyLink: string;
-  }>({
+  const [scholarship, setScholarship] = useState<ScholarshipType>({
     scholarshipId: 0,
     scholarShipImage: '',
     scholarshipName: '',
@@ -54,14 +56,14 @@ const ScholarshipDetail = () => {
     queryKey: ['announcements', params.id],
     queryFn: async () => {
       const res = await axios.get(`/announcements/${params.id}`);
-      console.log(res.data.data);
       setScholarship(res.data.data);
+      console.log(res.data.data);
       return res.data;
     },
   });
 
   return (
-    <div className="px-0 pb-24 md:px-0">
+    <div className="pb-24">
       <BackButtonHeader
         as="header"
         backButton={{ backUrl: '-1' }}
@@ -101,7 +103,9 @@ const ScholarshipDetail = () => {
                     {scholarship.scholarshipName}
                   </h1>
                   <div className="title-md-300 text-gray-90">
-                    {scholarship.supportAmount}만원
+                    {scholarship.supportAmount === '등록금 전액'
+                      ? '등록금 전액 지원'
+                      : `${scholarship.supportAmount}만원`}
                   </div>
                   <div className="text-md-200 text-gray-40">
                     {scholarship.applicationPeriod}

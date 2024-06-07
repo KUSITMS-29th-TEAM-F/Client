@@ -30,6 +30,7 @@ const SearchScholarships = () => {
           q: searchKeyword,
         },
       });
+      console.log(res.data.data);
       setScholarshipList(res.data.data.announcementBySearchResponseList);
       return res.data;
     },

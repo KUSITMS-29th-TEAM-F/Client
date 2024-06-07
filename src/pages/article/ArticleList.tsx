@@ -51,7 +51,7 @@ const ArticleList = () => {
 
   return (
     <div className="pb-16">
-      <div className="mx-auto max-w-screen-md">
+      <div className="mx-auto max-w-screen-lg">
         <header>
           <section>
             <Link

@@ -30,6 +30,7 @@ import Login from './pages/auth/Login';
 import Landing from './pages/landing/Landing';
 import FoundationDetail from './pages/foundation/FoundationDetail';
 import AuthRoute from './pages/auth/AuthRoute';
+import AuthNaverCallback from './pages/auth/AuthNaverCallback';
 
 export const router = createBrowserRouter([
   {
@@ -48,8 +49,17 @@ export const router = createBrowserRouter([
         element: <Login />,
       },
       {
-        path: '/auth/kakao/callback',
-        element: <AuthKakaoCallback />,
+        path: '/auth',
+        children: [
+          {
+            path: 'kakao/callback',
+            element: <AuthKakaoCallback />,
+          },
+          {
+            path: 'naver/callback',
+            element: <AuthNaverCallback />,
+          },
+        ],
       },
       {
         path: '/onboarding',

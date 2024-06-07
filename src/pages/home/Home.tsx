@@ -1,11 +1,13 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 
 import ArticleItem from '../../components/home/ArticleItem';
 import Axios from '../../api/axios';
 
 const Home = () => {
+  const navigate = useNavigate();
+
   const [popularScholarshipList, setPopularScholarshipList] = useState<
     {
       announcementId: number;
@@ -17,6 +19,7 @@ const Home = () => {
       howManyLikes: string;
     }[]
   >([]);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
   useQuery({
     queryKey: ['home', 'announcements'],
@@ -54,6 +57,22 @@ const Home = () => {
     },
   ];
 
+  useEffect(() => {
+    const accessToken = localStorage.getItem('access-token');
+    const refreshToken = localStorage.getItem('refresh-token');
+
+    if (accessToken && refreshToken) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+      navigate('/landing');
+    }
+  }, []);
+
+  if (!isLoggedIn) {
+    return null;
+  }
+
   return (
     <main>
       <section className="px-3 pb-6 pt-2">
@@ -90,11 +109,11 @@ const Home = () => {
           </div>
           <ul className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
             {popularScholarshipList.map((scholarship) => (
-              <li
-                key={scholarship.announcementId}
-                className="rounded-2xl border border-gray-10 bg-gray-00 p-4"
-              >
-                <Link to={`/scholarships/${scholarship.announcementId}`}>
+              <li key={scholarship.announcementId}>
+                <Link
+                  to={`/scholarships/${scholarship.announcementId}`}
+                  className="block rounded-2xl border border-gray-10 bg-gray-00 p-4"
+                >
                   <div className="flex items-start">
                     <div className="relative aspect-square w-[4rem] overflow-hidden rounded-lg">
                       <img
@@ -131,11 +150,11 @@ const Home = () => {
               <h1 className="title-md-300 text-gray-80">아티클</h1>
               <span className="text-md-200 text-gray-40">장학금 지원 A-Z!</span>
             </div>
-            <Link to="#" className="text-lg-200 text-gray-30">
+            <Link to="/articles" className="text-lg-200 text-gray-30">
               전체보기
             </Link>
           </div>
-          <ul className="mt-4 flex w-[calc(100vw-(100vw-100%)+1rem)] gap-4 overflow-x-scroll">
+          <ul className="mt-4 flex w-[calc(100vw-(100vw-100%)+1rem)] gap-4 overflow-x-auto">
             {articleList.map((article, index) => (
               <ArticleItem key={index} {...article} />
             ))}

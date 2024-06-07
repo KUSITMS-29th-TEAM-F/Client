@@ -55,6 +55,7 @@ const NavBar = () => {
     e.preventDefault();
     setIsSearchBarOpen(false);
     navigate(`/search?q=${searchKeyword}`);
+    setSearchKeyword('');
   };
 
   useEffect(() => {

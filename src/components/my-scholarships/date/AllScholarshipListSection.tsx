@@ -33,7 +33,9 @@ const AllScholarshipListSection = () => {
         formatListDateString(scholarship.endDocumentDate),
       ),
     ),
-  ).sort();
+  )
+    .sort()
+    .reverse();
 
   return (
     <section className="flex w-full flex-1 flex-col gap-6">

@@ -13,6 +13,7 @@ interface DropdownProps {
   placeholder: string;
   className?: string;
   value?: string;
+  disabled?: boolean;
 }
 
 const Dropdown = ({
@@ -22,13 +23,14 @@ const Dropdown = ({
   placeholder,
   className,
   value,
+  disabled,
 }: DropdownProps) => {
   const menuRef = useRef<HTMLDivElement>(null);
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleDropdownClick = () => {
-    if (value) return;
+    if (value || disabled) return;
     setIsMenuOpen(!isMenuOpen);
   };
 

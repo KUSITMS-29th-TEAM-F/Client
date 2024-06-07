@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import BackButtonHeader from '../../ui/BackButtonHeader';
@@ -18,6 +18,7 @@ const CoverLetterEditor = ({ mode }: CoverLetterEditorProps) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const params = useParams<{ coverLetterId: string }>();
+  const [searchParams] = useSearchParams();
 
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [isPopUpOpen, setIsPopUpOpen] = useState(false);
@@ -36,6 +37,7 @@ const CoverLetterEditor = ({ mode }: CoverLetterEditorProps) => {
   });
 
   const coverLetterId = Number(params.coverLetterId);
+  const applyId = Number(searchParams.get('applyId')) || null;
 
   const scholarshipItemList: string[] = scholarshipList.map(
     (scholarship) => scholarship.scholarShipName,
@@ -52,7 +54,7 @@ const CoverLetterEditor = ({ mode }: CoverLetterEditorProps) => {
   });
 
   const getQuestionList = useQuery({
-    queryKey: [],
+    queryKey: ['members', 'cover-letters', 'questions', coverLetter.applyId],
     queryFn: async () => {
       if (selectedIndex === null) return null;
       const applyId = scholarshipList[selectedIndex].applyId;
@@ -158,6 +160,15 @@ const CoverLetterEditor = ({ mode }: CoverLetterEditorProps) => {
     getQuestionList.refetch();
   }, [selectedIndex]);
 
+  useEffect(() => {
+    if (!scholarshipList || !applyId) return;
+    setSelectedIndex(
+      scholarshipList.findIndex(
+        (scholarship) => scholarship.applyId === applyId,
+      ),
+    );
+  }, [applyId, scholarshipList]);
+
   return (
     <div className="pb-16">
       <GrayBackground />
@@ -180,6 +191,7 @@ const CoverLetterEditor = ({ mode }: CoverLetterEditorProps) => {
                   setSelectedIndex={setSelectedIndex}
                   placeholder="장학금을 선택하세요"
                   value={coverLetter.scholarshipName}
+                  disabled={applyId !== null}
                 />
               </div>
               <div className="px-2 py-4">

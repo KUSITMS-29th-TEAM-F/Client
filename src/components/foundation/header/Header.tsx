@@ -1,15 +1,25 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import ChevronLeftIcon from '../../ui/icon/ChevronLeftIcon';
 import ChevronRightIcon from '../../ui/icon/ChevronRightIcon';
 
 const Header = () => {
+  const navigate = useNavigate();
+
+  const handleBackButtonClick = () => {
+    navigate(-1);
+  };
+
   return (
     <header>
       <div className="py-3">
-        <span className="text-[1.5rem] text-gray-60">
+        <Link
+          to="#"
+          className="text-[1.5rem] text-gray-60"
+          onClick={handleBackButtonClick}
+        >
           <ChevronLeftIcon />
-        </span>
+        </Link>
       </div>
       <div className="flex items-center gap-3 pb-4 pt-2">
         <div className="aspect-square w-[4.125rem] overflow-hidden rounded-lg">
