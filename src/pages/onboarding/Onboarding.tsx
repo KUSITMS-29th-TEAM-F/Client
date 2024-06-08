@@ -113,6 +113,7 @@ const Onboarding = () => {
             : null,
       };
       saveOnboarding.mutate(newValue);
+      saveOnboarding.mutate(newValue);
     }
     if (page <= 3) {
       setPage(page + 1);
