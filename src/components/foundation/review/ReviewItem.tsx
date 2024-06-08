@@ -1,35 +1,44 @@
+import { ScholarshipType } from '../../../pages/scholarship/ScholarshipDetail';
 import Status from '../../ui/Status';
 import StarFilledIcon from '../../ui/icon/StarFilledIcon';
 import ThumbUpIcon from '../../ui/icon/ThumbUpIcon';
+import { ReviewType } from '../main/ReviewsMain';
 
-const ReviewItem = () => {
+interface ReviewItemProps {
+  review: ReviewType;
+  scholarship: ScholarshipType;
+}
+
+const ReviewItem = ({ review, scholarship }: ReviewItemProps) => {
   return (
     <li className="flex flex-col gap-4 border-b border-gray-05 py-6">
       <div className="flex items-center gap-0.5">
-        {Array.from({ length: 4 }, (_, index) => index + 1).map((th) => (
-          <span key={th} className="text-primary">
-            <StarFilledIcon />
-          </span>
-        ))}
-        {Array.from({ length: 1 }, (_, index) => index + 1).map((th) => (
-          <span key={th} className="text-gray-15">
-            <StarFilledIcon />
-          </span>
-        ))}
+        {Array.from({ length: review.star }, (_, index) => index + 1).map(
+          (th) => (
+            <span key={th} className="text-primary">
+              <StarFilledIcon />
+            </span>
+          ),
+        )}
+        {Array.from({ length: 5 - review.star }, (_, index) => index + 1).map(
+          (th) => (
+            <span key={th} className="text-gray-15">
+              <StarFilledIcon />
+            </span>
+          ),
+        )}
       </div>
       <div className="flex flex-col gap-3">
-        <h2 className="text-lg-300 text-gray-80">
-          31기 미래에셋 해외교환 장학생
-        </h2>
+        <h2 className="text-lg-300 text-gray-80">{review.name}</h2>
         <div>
-          <Status variant="primary">2024.04.24 모집</Status>
-          <Status variant="success">합격</Status>
+          <Status variant="primary">
+            {scholarship.applicationPeriod.split(' ')[1]} 모집
+          </Status>
+          <Status variant={review.status === 'PASS' ? 'success' : 'danger'}>
+            {review.status === 'PASS' ? '합격' : '불합격'}
+          </Status>
         </div>
-        <p className="text-sm-extra text-gray-70">
-          교환학생 가는 대학생들은 필수로 신청해야 하는 최고의 장학금. 생각보다
-          지원 절차도 까다롭지 않고 교환학생 가는데 비용 걱정되는 사람들은 이거
-          하나면 부담 덜 수 있음.
-        </p>
+        <p className="text-sm-extra text-gray-70">{review.contents}</p>
       </div>
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
@@ -40,15 +49,15 @@ const ReviewItem = () => {
                 alt="프로필 임시 이미지"
               />
             </div>
-            <span className="text-md-200 text-gray-60">닉네임</span>
+            <span className="text-md-200 text-gray-60">익명</span>
           </div>
-          <span className="caption-200 text-gray-30">2024.05.12</span>
+          <span className="caption-200 text-gray-30">{review.date}</span>
         </div>
         <div className="flex items-center gap-1 rounded-lg border border-primary bg-white px-3 py-1.5 text-primary">
           <span>
             <ThumbUpIcon />
           </span>
-          <span className="caption-300">123</span>
+          <span className="caption-300">0</span>
         </div>
       </div>
     </li>

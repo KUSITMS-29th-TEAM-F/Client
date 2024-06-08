@@ -10,7 +10,7 @@ import ScholarshipTabSection from '../../components/scholarship/detail/section/S
 import ScholarshipBottomAction from '../../components/scholarship/detail/section/ScholarshipBottomAction';
 import axios from '../../api/axios';
 
-interface ScholarshipType {
+export interface ScholarshipType {
   scholarshipId: number;
   scholarShipImage: string;
   scholarshipName: string;
@@ -146,7 +146,9 @@ const ScholarshipDetail = () => {
               >
                 지원하기
               </Link>
-              <Link to="/foundations/1">
+              <Link
+                to={`/scholarships/${scholarship.scholarshipId}/foundations/1`}
+              >
                 <Button variant="light-primary">
                   <span className="text-lg-300 flex gap-1 text-gray-80">
                     <span className="text-[1.25rem]">

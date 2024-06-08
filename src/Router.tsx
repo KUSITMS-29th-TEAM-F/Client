@@ -78,7 +78,21 @@ export const router = createBrowserRouter([
               },
               {
                 path: ':id',
-                element: <ScholarshipDetail />,
+                children: [
+                  {
+                    path: '',
+                    element: <ScholarshipDetail />,
+                  },
+                  {
+                    path: 'foundations',
+                    children: [
+                      {
+                        path: ':foundationId',
+                        element: <FoundationDetail />,
+                      },
+                    ],
+                  },
+                ],
               },
             ],
           },
@@ -86,15 +100,7 @@ export const router = createBrowserRouter([
             path: '/recommend',
             element: <RecommendScholarships />,
           },
-          {
-            path: '/foundations',
-            children: [
-              {
-                path: ':id',
-                element: <FoundationDetail />,
-              },
-            ],
-          },
+
           {
             path: '/my-scholarships',
             element: <MyScholarshipsLayout />,
